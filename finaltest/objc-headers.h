@@ -1,0 +1,1 @@
+#import "WebSocketRailsDispatcher.h"

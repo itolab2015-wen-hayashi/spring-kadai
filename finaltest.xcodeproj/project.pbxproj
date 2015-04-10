@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26375E971ACC305A00477B7C /* table.png in Resources */ = {isa = PBXBuildFile; fileRef = 26375E961ACC305A00477B7C /* table.png */; };
+		320ED267DC81A4D32527857F /* libPods-finaltest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF84FE09DE5EF3CD17A9725D /* libPods-finaltest.a */; };
 		D57964741AC06BEB00FD56E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57964731AC06BEB00FD56E2 /* AppDelegate.swift */; };
 		D57964761AC06BEB00FD56E2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D57964751AC06BEB00FD56E2 /* GameScene.sks */; };
 		D57964781AC06BEB00FD56E2 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D57964771AC06BEB00FD56E2 /* GameScene.swift */; };
@@ -28,6 +30,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		26375E961ACC305A00477B7C /* table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table.png; sourceTree = SOURCE_ROOT; };
+		2F4F4E581AD7A1E000FA8C85 /* objc-headers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "objc-headers.h"; sourceTree = "<group>"; };
+		7199FE909E1594A752789AA5 /* Pods-finaltest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-finaltest.release.xcconfig"; path = "Pods/Target Support Files/Pods-finaltest/Pods-finaltest.release.xcconfig"; sourceTree = "<group>"; };
 		D579646E1AC06BEB00FD56E2 /* finaltest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = finaltest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D57964721AC06BEB00FD56E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D57964731AC06BEB00FD56E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -40,6 +45,8 @@
 		D57964871AC06BEB00FD56E2 /* finaltestTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = finaltestTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D579648C1AC06BEB00FD56E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D579648D1AC06BEB00FD56E2 /* finaltestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = finaltestTests.swift; sourceTree = "<group>"; };
+		FAB5ED9DA69584AAFDE7327C /* Pods-finaltest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-finaltest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-finaltest/Pods-finaltest.debug.xcconfig"; sourceTree = "<group>"; };
+		FF84FE09DE5EF3CD17A9725D /* libPods-finaltest.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-finaltest.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				320ED267DC81A4D32527857F /* libPods-finaltest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,12 +68,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A8D53AC7451520FDFCA5D76E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FAB5ED9DA69584AAFDE7327C /* Pods-finaltest.debug.xcconfig */,
+				7199FE909E1594A752789AA5 /* Pods-finaltest.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B26BCD3730A56BCC2B9216F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FF84FE09DE5EF3CD17A9725D /* libPods-finaltest.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D57964651AC06BEA00FD56E2 = {
 			isa = PBXGroup;
 			children = (
 				D57964701AC06BEB00FD56E2 /* finaltest */,
 				D579648A1AC06BEB00FD56E2 /* finaltestTests */,
 				D579646F1AC06BEB00FD56E2 /* Products */,
+				A8D53AC7451520FDFCA5D76E /* Pods */,
+				B26BCD3730A56BCC2B9216F5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,7 +115,9 @@
 				D579647B1AC06BEB00FD56E2 /* Main.storyboard */,
 				D579647E1AC06BEB00FD56E2 /* Images.xcassets */,
 				D57964801AC06BEB00FD56E2 /* LaunchScreen.xib */,
+				26375E961ACC305A00477B7C /* table.png */,
 				D57964711AC06BEB00FD56E2 /* Supporting Files */,
+				2F4F4E581AD7A1E000FA8C85 /* objc-headers.h */,
 			);
 			path = finaltest;
 			sourceTree = "<group>";
@@ -125,9 +154,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D57964911AC06BEB00FD56E2 /* Build configuration list for PBXNativeTarget "finaltest" */;
 			buildPhases = (
+				B8201982BB7FB37570D85494 /* Check Pods Manifest.lock */,
 				D579646A1AC06BEB00FD56E2 /* Sources */,
 				D579646B1AC06BEB00FD56E2 /* Frameworks */,
 				D579646C1AC06BEB00FD56E2 /* Resources */,
+				9EA77416271D6A85A634A7B8 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -202,6 +233,7 @@
 				D579647F1AC06BEB00FD56E2 /* Images.xcassets in Resources */,
 				D57964761AC06BEB00FD56E2 /* GameScene.sks in Resources */,
 				D579647D1AC06BEB00FD56E2 /* Main.storyboard in Resources */,
+				26375E971ACC305A00477B7C /* table.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +245,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9EA77416271D6A85A634A7B8 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-finaltest/Pods-finaltest-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B8201982BB7FB37570D85494 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D579646A1AC06BEB00FD56E2 /* Sources */ = {
@@ -344,21 +409,25 @@
 		};
 		D57964921AC06BEB00FD56E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FAB5ED9DA69584AAFDE7327C /* Pods-finaltest.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = finaltest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "finaltest/objc-headers.h";
 			};
 			name = Debug;
 		};
 		D57964931AC06BEB00FD56E2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7199FE909E1594A752789AA5 /* Pods-finaltest.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = finaltest/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "finaltest/objc-headers.h";
 			};
 			name = Release;
 		};
@@ -415,6 +484,7 @@
 				D57964931AC06BEB00FD56E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D57964941AC06BEB00FD56E2 /* Build configuration list for PBXNativeTarget "finaltestTests" */ = {
 			isa = XCConfigurationList;
@@ -423,6 +493,7 @@
 				D57964961AC06BEB00FD56E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

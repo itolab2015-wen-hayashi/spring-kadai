@@ -8,38 +8,169 @@
 
 import SpriteKit
 
+let NumColumns = 6
+let NumRows = 10
+let TileSize:CGFloat = 50
+
+let BoardLayerPosition = CGPointMake(20, -80)
+let TextFieldPosition = CGPointMake(20, -20)
+let TextFieldPosition2 = CGPointMake(20, -60)
+
 class GameScene: SKScene {
-    override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
+    var board = SKSpriteNode()
+    let boardLayer = SKNode()
+    let shapeLayer = SKNode()
+    
+    let textLayer = SKNode()
+    let strLayer = SKNode()
+    
+    let score = SKLabelNode()
+    let gameoverLabel = SKLabelNode()
+    
+    var tileArrayPos = Array(count: NumColumns, repeatedValue: Array(count: NumRows, repeatedValue: CGPoint()))
+    var touchedNode = SKNode()
+    var moveActionFlag = false
+    var gameoverFlag = false
+    var scorePoint = 0
+    
+    override init(size:CGSize){//????????????????????
+        super.init(size: size)
         
-        self.addChild(myLabel)
+        self.backgroundColor = UIColor.orangeColor()
+        //let background = SKSpriteNode(imageNamed: "table.png")
+        //background.position = CGPointMake(self.size.width/2, self.size.height/2)
+        //background.xScale = self.size.width /
+        //self.addChild(background)
+        
+        anchorPoint = CGPointMake(0, 1.0)
+        
+        addChild(boardLayer)//???????????
+        addChild(textLayer)//????????????
+        
+        board = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, CGFloat(NumRows)*TileSize))
+        board.name = "board"
+        board.anchorPoint = CGPointMake(0, 1.0)
+        board.position = BoardLayerPosition
+        
+        
+        let textfield = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, 80))
+        textfield.position = TextFieldPosition
+        textfield.anchorPoint = CGPointMake(0, 1.0)
+        
+        score.fontColor = UIColor.blackColor()
+        score.position = CGPointMake(textfield.position.x*7, textfield.position.y-30)
+        textfield.addChild(score)
+        
+        strLayer.position = TextFieldPosition
+        strLayer.addChild(textfield)
+        textLayer.addChild(strLayer)
+        
+        shapeLayer.position = BoardLayerPosition
+        shapeLayer.addChild(board)
+        boardLayer.addChild(shapeLayer)
+        
     }
     
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        /* Called when a touch begins */
-        
-        for touch: AnyObject in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("Error")
     }
-   
-    override func update(currentTime: CFTimeInterval) {
+    
+    override func didMoveToView(view: SKView) {
+        /* Setup your scene here */
+        initMakeTile()
+        
+    }
+    
+    func randomColor()->UIColor{
+        //0:red,1:green,2:blue,3:yellow
+        let rnd = arc4random()%4
+        var color:UIColor!
+        switch rnd{
+        case 0:
+            color = UIColor(red: 0.11, green: 0.71, blue: 0.56, alpha: 1)//like green
+        case 1:
+            color = UIColor(red: 0.94, green: 0.72, blue: 0.29, alpha: 1)//like yellow
+        case 2:
+            color = UIColor(red: 0.08, green: 0.56, blue: 0.65, alpha: 1)//mint
+        case 3:
+            color = UIColor(red: 0.93, green: 0.26, blue: 0.24, alpha: 1)// like red
+        default:
+            break
+        }
+        return color
+    }
+    
+    func initMakeTile(){
+        var i = Int(arc4random()) % 6
+        var j = Int(arc4random()) % 10
+        let sprite = makeTileOne()
+        
+        sprite.position = CGPointMake(CGFloat(i)*TileSize,-CGFloat(j)*TileSize)
+        tileArrayPos[i][j] = sprite.position
+        
+        board.addChild(sprite)
+        
+    }
+    
+    
+    func makeTileOne()->SKSpriteNode{
+        let sprite = SKSpriteNode()
+        sprite.anchorPoint = CGPointMake(0, 1.0)
+        sprite.alpha *= 1.0
+        sprite.color = randomColor()
+        //sprite.color = UIColor.greenColor()
+        sprite.size = CGSizeMake(TileSize-1, TileSize-1)
+        
+        return sprite
+    }
+    
+        override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        /* Called when a touch begins */
+        //var deleteColumnsArray = Array(arrayLiteral:SKNode())
+            if(gameoverFlag == false){
+        for touch in touches {
+            let location = touch.locationInNode(self)
+            //printf(location)
+            touchedNode = self.nodeAtPoint(location)
+            for node in self.board.children{
+                if(touchedNode == node as NSObject && !moveActionFlag){
+                    self.removeChildrenInArray([touchedNode])
+                    board.removeChildrenInArray([touchedNode])
+                    scorePoint += 100
+                    initMakeTile()
+                
+                }
+            }
+            
+                }
+            }
+    }
+    
+    func gameover(){
+        gameoverLabel.text = "You Win"
+        gameoverLabel.fontSize = 100
+        gameoverLabel.fontColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: 1)
+        gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        self.addChild(gameoverLabel)
+        gameoverFlag = true
+    }
+    
+    func reset(){
+        gameoverFlag = false
+        
+        gameoverLabel.removeFromParent()
+        
+        scorePoint = 0
+    }
+    
+        override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        score.text = "Score : \(scorePoint)"
+            
+            if(gameoverFlag == false){
+                if(scorePoint >= 200){
+                    self.gameover()
+                }
+            }
     }
 }
