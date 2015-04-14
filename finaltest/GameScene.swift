@@ -97,14 +97,6 @@ class GameScene: SKScene {
         // 接続時のイベントハンドラ
         webSocket.bind("connection_opened", callback: { (data) -> Void in
             println("接続した！")
-            
-            // 適当にサーバにメッセージを送ってみる
-            // 送信するデータは Dictionary でないといけないっぽい
-            var data: Dictionary = ["id": "*randomId*", "data": "ここにデータが入る"]
-            // webSocket.trigger メソッドでサーバ側のイベントを指定して送信する.
-            // 今は送ったデータをすぐ全クライアントにブロードキャストするだけなので
-            // websocket_game イベントハンドラが呼ばれるはず
-            self.webSocket.trigger("websocket_game", data: data, success: nil, failure: nil)
         })
         
         // 切断時のイベントハンドラ
@@ -112,9 +104,12 @@ class GameScene: SKScene {
             println("切断された")
         })
         
-        // ゲームイベント (websocket_game) 受信時のイベントハンドラ
-        webSocket.bind("websocket_game", callback: { (data) -> Void in
-            println("game: \(data)")
+        // ゲームイベント (next_round) 受信時のイベントハンドラ
+        webSocket.bind("next_round", callback: { (data) -> Void in
+            // こんな感じのデータが来るはず
+//            data: Dictionary = [
+//                "time": NSDate("2015-04-14 16:17:22")
+//            ]
         })
         
         // --- ここまでイベント登録 ---
