@@ -16,17 +16,6 @@ let BoardLayerPosition = CGPointMake(20, -80)
 let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
-var t: Double = 0
-var t11: Double = 0
-var t12: Double = 0
-var t13: Double = 0
-var t14: Double = 0
-
-var t21: Double = 0
-var t22: Double = 0
-var t23: Double = 0
-var t24: Double = 0
-
 class GameScene: SKScene {
     var board = SKSpriteNode()
     let boardLayer = SKNode()
