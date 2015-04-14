@@ -1,1 +1,0 @@
-../../../WebSocketRails/WebSocketRails-iOS/WebSocketRailsTypes.h
