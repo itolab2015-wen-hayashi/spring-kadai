@@ -44,6 +44,9 @@ class GameScene: SKScene {
     var gameoverFlag = false
     var scorePoint = 0
     
+    // タイルが表示された時刻
+    var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
+    
     override init(size:CGSize){//????????????????????
         super.init(size: size)
         
@@ -121,21 +124,7 @@ class GameScene: SKScene {
         
         board.addChild(sprite)
         
-        var now = NSDate()
-        var formatter1 = NSDateFormatter()
-        var formatter2 = NSDateFormatter()
-        var formatter3 = NSDateFormatter()
-        formatter1.dateFormat = "SSS"
-        formatter2.dateFormat = "ss"
-        formatter3.dateFormat = "mm"
-        
-        t11 = atof(formatter1.stringFromDate(now))
-        t12 = atof(formatter2.stringFromDate(now))
-        t13 = atof(formatter3.stringFromDate(now))
-        t14 = t13 * 60 * 1000 + t12 * 1000 + t11
-        //println(t11)
-        //println(t12)
-        //println(t13)
+        tileDisplayedTime = NSDate.timeIntervalSinceReferenceDate()
     }
     
     
@@ -160,20 +149,9 @@ class GameScene: SKScene {
                 touchedNode = self.nodeAtPoint(location)
                 for node in self.board.children{
                     if(touchedNode == node as! NSObject && !moveActionFlag){
-                        var now = NSDate()
-                        var formatter1 = NSDateFormatter()
-                        var formatter2 = NSDateFormatter()
-                        var formatter3 = NSDateFormatter()
-                        formatter1.dateFormat = "SSS"
-                        formatter2.dateFormat = "ss"
-                        formatter3.dateFormat = "mm"
-                        t21 = atof(formatter1.stringFromDate(now))
-                        t22 = atof(formatter2.stringFromDate(now))
-                        t23 = atof(formatter3.stringFromDate(now))
-                        t24 = t23 * 60 * 1000 + t22 * 1000 + t21
-                        t = t24 - t14
-                        //println(t21)
-                        println(t)
+                        let now = NSDate.timeIntervalSinceReferenceDate()
+                        let elapsedTime = (now - self.tileDisplayedTime) * 1000
+                        println("elapsedTime=\(elapsedTime)")
 
                         self.removeChildrenInArray([touchedNode])
                         board.removeChildrenInArray([touchedNode])
