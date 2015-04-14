@@ -16,6 +16,17 @@ let BoardLayerPosition = CGPointMake(20, -80)
 let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
+var t: Double = 0
+var t11: Double = 0
+var t12: Double = 0
+var t13: Double = 0
+var t14: Double = 0
+
+var t21: Double = 0
+var t22: Double = 0
+var t23: Double = 0
+var t24: Double = 0
+
 class GameScene: SKScene {
     var board = SKSpriteNode()
     let boardLayer = SKNode()
@@ -110,6 +121,21 @@ class GameScene: SKScene {
         
         board.addChild(sprite)
         
+        var now = NSDate()
+        var formatter1 = NSDateFormatter()
+        var formatter2 = NSDateFormatter()
+        var formatter3 = NSDateFormatter()
+        formatter1.dateFormat = "SSS"
+        formatter2.dateFormat = "ss"
+        formatter3.dateFormat = "mm"
+        
+        t11 = atof(formatter1.stringFromDate(now))
+        t12 = atof(formatter2.stringFromDate(now))
+        t13 = atof(formatter3.stringFromDate(now))
+        t14 = t13 * 60 * 1000 + t12 * 1000 + t11
+        //println(t11)
+        //println(t12)
+        //println(t13)
     }
     
     
@@ -134,6 +160,21 @@ class GameScene: SKScene {
                 touchedNode = self.nodeAtPoint(location)
                 for node in self.board.children{
                     if(touchedNode == node as! NSObject && !moveActionFlag){
+                        var now = NSDate()
+                        var formatter1 = NSDateFormatter()
+                        var formatter2 = NSDateFormatter()
+                        var formatter3 = NSDateFormatter()
+                        formatter1.dateFormat = "ss.SSS"
+                        formatter2.dateFormat = "ss"
+                        formatter3.dateFormat = "mm"
+                        t21 = atof(formatter1.stringFromDate(now))
+                        t22 = atof(formatter2.stringFromDate(now))
+                        t23 = atof(formatter3.stringFromDate(now))
+                        t24 = t23 * 60 * 1000 + t22 * 1000 + t21
+                        t = t24 - t14
+                        //println(t21)
+                        println(t)
+
                         self.removeChildrenInArray([touchedNode])
                         board.removeChildrenInArray([touchedNode])
                         scorePoint += 100
@@ -168,7 +209,7 @@ class GameScene: SKScene {
         score.text = "Score : \(scorePoint)"
         
         if(gameoverFlag == false){
-            if(scorePoint >= 200){
+            if(scorePoint >= 800){
                 self.gameover()
             }
         }
