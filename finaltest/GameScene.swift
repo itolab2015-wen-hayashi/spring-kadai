@@ -124,26 +124,26 @@ class GameScene: SKScene {
         return sprite
     }
     
-        override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         //var deleteColumnsArray = Array(arrayLiteral:SKNode())
-            if(gameoverFlag == false){
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            //printf(location)
-            touchedNode = self.nodeAtPoint(location)
-            for node in self.board.children{
-                if(touchedNode == node as NSObject && !moveActionFlag){
-                    self.removeChildrenInArray([touchedNode])
-                    board.removeChildrenInArray([touchedNode])
-                    scorePoint += 100
-                    initMakeTile()
+        if(gameoverFlag == false){
+            for touch in touches {
+                let location = (touch as! UITouch).locationInNode(self)
+                //printf(location)
+                touchedNode = self.nodeAtPoint(location)
+                for node in self.board.children{
+                    if(touchedNode == node as! NSObject && !moveActionFlag){
+                        self.removeChildrenInArray([touchedNode])
+                        board.removeChildrenInArray([touchedNode])
+                        scorePoint += 100
+                        initMakeTile()
+                        
+                    }
+                }
                 
-                }
             }
-            
-                }
-            }
+        }
     }
     
     func gameover(){
@@ -163,14 +163,14 @@ class GameScene: SKScene {
         scorePoint = 0
     }
     
-        override func update(currentTime: CFTimeInterval) {
+    override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         score.text = "Score : \(scorePoint)"
-            
-            if(gameoverFlag == false){
-                if(scorePoint >= 200){
-                    self.gameover()
-                }
+        
+        if(gameoverFlag == false){
+            if(scorePoint >= 200){
+                self.gameover()
             }
+        }
     }
 }
