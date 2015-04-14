@@ -17,6 +17,8 @@ let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
 class GameScene: SKScene {
+    var webSocket: WebSocketRailsDispatcher
+    
     var board = SKSpriteNode()
     let boardLayer = SKNode()
     let shapeLayer = SKNode()
@@ -36,8 +38,13 @@ class GameScene: SKScene {
     // タイルが表示された時刻
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     
-    override init(size:CGSize){//????????????????????
+    init(size:CGSize, webSocket:WebSocketRailsDispatcher){
+        self.webSocket = webSocket
+
         super.init(size: size)
+        
+        // websocket 設定
+        initWebSocket();
         
         self.backgroundColor = UIColor.orangeColor()
         //let background = SKSpriteNode(imageNamed: "table.png")
@@ -47,8 +54,8 @@ class GameScene: SKScene {
         
         anchorPoint = CGPointMake(0, 1.0)
         
-        addChild(boardLayer)//???????????
-        addChild(textLayer)//????????????
+        addChild(boardLayer)
+        addChild(textLayer)
         
         board = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, CGFloat(NumRows)*TileSize))
         board.name = "board"
@@ -76,6 +83,41 @@ class GameScene: SKScene {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("Error")
+    }
+    
+    func initWebSocket() {
+        // TODO: WebSocket のイベントハンドラを登録する
+        
+        // ------------------
+        // テスト用サンプルコード
+        // ------------------
+        
+        // --- ここからイベント登録 ---
+        
+        // 接続時のイベントハンドラ
+        webSocket.bind("connection_opened", callback: { (data) -> Void in
+            println("接続した！")
+            
+            // 適当にサーバにメッセージを送ってみる
+            // 送信するデータは Dictionary でないといけないっぽい
+            var data: Dictionary = ["id": "*randomId*", "data": "ここにデータが入る"]
+            // webSocket.trigger メソッドでサーバ側のイベントを指定して送信する.
+            // 今は送ったデータをすぐ全クライアントにブロードキャストするだけなので
+            // websocket_game イベントハンドラが呼ばれるはず
+            self.webSocket.trigger("websocket_game", data: data, success: nil, failure: nil)
+        })
+        
+        // 切断時のイベントハンドラ
+        webSocket.bind("connection_closed", callback: { (data) -> Void in
+            println("切断された")
+        })
+        
+        // ゲームイベント (websocket_game) 受信時のイベントハンドラ
+        webSocket.bind("websocket_game", callback: { (data) -> Void in
+            println("game: \(data)")
+        })
+        
+        // --- ここまでイベント登録 ---
     }
     
     override func didMoveToView(view: SKView) {
@@ -141,6 +183,8 @@ class GameScene: SKScene {
                         let now = NSDate.timeIntervalSinceReferenceDate()
                         let elapsedTime = (now - self.tileDisplayedTime) * 1000
                         println("elapsedTime=\(elapsedTime)")
+                        
+                        // TODO webSocket.trigger でメッセージを送る
 
                         self.removeChildrenInArray([touchedNode])
                         board.removeChildrenInArray([touchedNode])
