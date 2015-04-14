@@ -182,12 +182,12 @@ class GameScene: SKScene {
                     if(touchedNode == node as! NSObject && !moveActionFlag){
                         let now = NSDate.timeIntervalSinceReferenceDate()
                         let elapsedTime = (now - self.tileDisplayedTime) * 1000
-                        println("elapsedTime=\(elapsedTime)")
+                        println("elapsed_Time=\(elapsedTime)")
                         
                         var data: Dictionary = [
                             "id": "*randomId*",
                             "data": [
-                                "elapsedTime": elapsedTime
+                                "elapsed_time": elapsedTime
                             ]
                         ]
                         
