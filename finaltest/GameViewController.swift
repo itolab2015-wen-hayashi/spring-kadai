@@ -18,7 +18,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         // websocket 初期化
-        webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://127.0.0.1:3000/websocket"))
+        webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://133.68.108.19:3000/websocket"))
         
         skView = self.view as? SKView
         let scene = GameScene(size:self.view.bounds.size, webSocket: webSocket)
