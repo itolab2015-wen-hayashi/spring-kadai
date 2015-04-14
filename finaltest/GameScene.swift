@@ -184,12 +184,20 @@ class GameScene: SKScene {
                         let elapsedTime = (now - self.tileDisplayedTime) * 1000
                         println("elapsedTime=\(elapsedTime)")
                         
-                        var data: NSDictionary=["id": "tile_pushed", "elapsedTime": elapsedTime]
+                        var data: Dictionary = [
+                            "id": "*randomId*",
+                            "data": [
+                                "elapsedTime": elapsedTime
+                            ]
+                        ]
                         
                         // TODO webSocket.trigger でメッセージを送る
-                        webSocket.trigger("tile_pushed", data: data, success: nil, failure: nil)
+                        webSocket.trigger("tile_pushed", data: data, success: { (data) -> Void in
+                            println("tile_pushed: success")
+                        }, failure: { (data) -> Void in
+                            println("tile_pushed: failure")
+                        })
                         
-
                         self.removeChildrenInArray([touchedNode])
                         board.removeChildrenInArray([touchedNode])
                         scorePoint += 100
