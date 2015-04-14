@@ -164,7 +164,7 @@ class GameScene: SKScene {
                         var formatter1 = NSDateFormatter()
                         var formatter2 = NSDateFormatter()
                         var formatter3 = NSDateFormatter()
-                        formatter1.dateFormat = "ss.SSS"
+                        formatter1.dateFormat = "SSS"
                         formatter2.dateFormat = "ss"
                         formatter3.dateFormat = "mm"
                         t21 = atof(formatter1.stringFromDate(now))
