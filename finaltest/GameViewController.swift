@@ -12,12 +12,13 @@ import SpriteKit
 class GameViewController: UIViewController {
     
     var skView : SKView?
+    var webSocket: WebSocketRailsDispatcher!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // websocket 初期化
-        var webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://127.0.0.1:3000/websocket"))
+        webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://127.0.0.1:3000/websocket"))
         
         skView = self.view as? SKView
         let scene = GameScene(size:self.view.bounds.size, webSocket: webSocket)
