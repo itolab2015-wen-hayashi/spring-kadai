@@ -105,16 +105,9 @@ class GameScene: SKScene {
             println("切断された")
         })
         
+        // ゲームイベント (new_round) 受信時のイベントハンドラ
         webSocket.bind("new_round", callback: { (data) -> Void in
             println("new_round")
-        })
-        
-        // ゲームイベント (next_round) 受信時のイベントハンドラ
-        webSocket.bind("next_round", callback: { (data) -> Void in
-            // こんな感じのデータが来るはず
-//            data: Dictionary = [
-//                "time": NSDate("2015-04-14 16:17:22")
-//            ]
         })
         
         webSocket.bind("winner_approval", callback: { (data) -> Void in
