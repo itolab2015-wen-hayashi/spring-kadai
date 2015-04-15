@@ -110,17 +110,20 @@ class GameScene: SKScene {
             println("new_round")
         })
         
+        // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
         webSocket.bind("winner_approval", callback: { (data) -> Void in
+            // タイル消す
+            // TODO: implement this
+            
+            // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
+            let minElapsedTime: Double = _data!["elapsed_time"] as! Double
             
-            
+            // 送信データを生成
             var wsdata: Dictionary = [
                 "id": "*randomId*",
                 "data": []
             ]
-            let minElapsedTime: Double = _data!["elapsed_time"] as! Double
-
-
             if (0 < self.elapsedTime) {
                 if (self.elapsedTime < minElapsedTime) {
                     wsdata["data"] = [
@@ -135,15 +138,30 @@ class GameScene: SKScene {
                 ]
             }
             
+            // データ送信
             self.webSocket.trigger("winner_approval", data: wsdata, success: nil, failure: nil)
         })
         
+        // 一試合の終わりのイベントを受信したときのイベントハンドラ
         webSocket.bind("close_round", callback: { (data) -> Void in
             println("close_round")
+            
+            // データ取り出し
+            let _data = data as? Dictionary<String, AnyObject>
+            let winner: String = _data!["winner"] as! String // 勝者の client_id
+            
+            // TODO: 勝ったかどうか判断して表示する
         })
         
+        // 全試合の終わりのイベントを受信したときのイベントハンドラ
         webSocket.bind("close_game", callback: { (data) -> Void in
             println ("close_game")
+            
+            // データ取り出し
+            let _data = data as? Dictionary<String, AnyObject>
+            let winner: String = _data!["winner"] as! String // 勝者の client_id
+            
+            // TODO: 勝ったかどうか判断して表示する
         })
         
         // --- ここまでイベント登録 ---
