@@ -37,6 +37,7 @@ class GameScene: SKScene {
     
     // タイルが表示された時刻
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
+    var elapsedTime:Double = -1.0
     
     init(size:CGSize, webSocket:WebSocketRailsDispatcher){
         self.webSocket = webSocket
@@ -104,12 +105,52 @@ class GameScene: SKScene {
             println("切断された")
         })
         
+        webSocket.bind("new_round", callback: { (data) -> Void in
+            println("new_round")
+        })
+        
         // ゲームイベント (next_round) 受信時のイベントハンドラ
         webSocket.bind("next_round", callback: { (data) -> Void in
             // こんな感じのデータが来るはず
 //            data: Dictionary = [
 //                "time": NSDate("2015-04-14 16:17:22")
 //            ]
+        })
+        
+        webSocket.bind("winner_approval", callback: { (data) -> Void in
+            let _data = data as? Dictionary<String, AnyObject>
+            
+            
+            var wsdata: Dictionary = [
+                "id": "*randomId*",
+                "data": []
+            ]
+            let minElapsedTime: Double = _data!["elapsed_time"] as! Double
+
+
+            if (0 < self.elapsedTime) {
+                if (self.elapsedTime < minElapsedTime) {
+                    wsdata["data"] = [
+                        "approve": false,
+                        "elapsed_time": self.elapsedTime
+                    ]
+                }
+            } else {
+                // approve する
+                wsdata["data"] = [
+                    "approve": true
+                ]
+            }
+            
+            self.webSocket.trigger("winner_approval", data: wsdata, success: nil, failure: nil)
+        })
+        
+        webSocket.bind("close_round", callback: { (data) -> Void in
+            println("close_round")
+        })
+        
+        webSocket.bind("close_game", callback: { (data) -> Void in
+            println ("close_game")
         })
         
         // --- ここまでイベント登録 ---
@@ -151,6 +192,7 @@ class GameScene: SKScene {
         board.addChild(sprite)
         
         tileDisplayedTime = NSDate.timeIntervalSinceReferenceDate()
+        elapsedTime = -1.0
     }
     
     
@@ -176,7 +218,7 @@ class GameScene: SKScene {
                 for node in self.board.children{
                     if(touchedNode == node as! NSObject && !moveActionFlag){
                         let now = NSDate.timeIntervalSinceReferenceDate()
-                        let elapsedTime = (now - self.tileDisplayedTime) * 1000
+                        elapsedTime = (now - self.tileDisplayedTime) * 1000
                         println("elapsed_Time=\(elapsedTime)")
                         
                         var data: Dictionary = [
