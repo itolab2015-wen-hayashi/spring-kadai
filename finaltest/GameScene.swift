@@ -108,6 +108,12 @@ class GameScene: SKScene {
         // ゲームイベント (new_round) 受信時のイベントハンドラ
         webSocket.bind("new_round", callback: { (data) -> Void in
             println("new_round")
+            
+            // 受信データ取り出し
+            let _data = data as? Dictionary<String, AnyObject>
+            let time: String = _data!["time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            
+            // TODO: time 時刻にタイルを表示する
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
