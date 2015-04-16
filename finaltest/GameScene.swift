@@ -16,9 +16,7 @@ let BoardLayerPosition = CGPointMake(20, -80)
 let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
-class GameScene: SKScene {
-    var webSocket: WebSocketRailsDispatcher
-    
+class GameScene: BaseScene {
     var board = SKSpriteNode()
     let boardLayer = SKNode()
     let shapeLayer = SKNode()
@@ -42,47 +40,22 @@ class GameScene: SKScene {
     // id
     var myId: String = ""
     
-    init(size:CGSize, webSocket:WebSocketRailsDispatcher){
-        self.webSocket = webSocket
-
-        super.init(size: size)
+    override init(size:CGSize, webSocket:WebSocketRailsDispatcher){
+        super.init(size: size, webSocket: webSocket)
         
         // websocket 設定
         initWebSocket();
         
-        self.backgroundColor = UIColor.orangeColor()
-        //let background = SKSpriteNode(imageNamed: "table.png")
-        //background.position = CGPointMake(self.size.width/2, self.size.height/2)
-        //background.xScale = self.size.width /
-        //self.addChild(background)
+        // scene 初期化
+        initScene();
         
-        anchorPoint = CGPointMake(0, 1.0)
-        
-        addChild(boardLayer)
-        addChild(textLayer)
-        
-        board = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, CGFloat(NumRows)*TileSize))
-        board.name = "board"
-        board.anchorPoint = CGPointMake(0, 1.0)
-        board.position = BoardLayerPosition
-        
-        
-        let textfield = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, 80))
-        textfield.position = TextFieldPosition
-        textfield.anchorPoint = CGPointMake(0, 1.0)
-        
-        score.fontColor = UIColor.blackColor()
-        score.position = CGPointMake(textfield.position.x*7, textfield.position.y-30)
-        textfield.addChild(score)
-        
-        strLayer.position = TextFieldPosition
-        strLayer.addChild(textfield)
-        textLayer.addChild(strLayer)
-        
-        shapeLayer.position = BoardLayerPosition
-        shapeLayer.addChild(board)
-        boardLayer.addChild(shapeLayer)
-        
+        // ゲーム参加通知
+        webSocket.trigger("join_game", data: [
+            "id": "*randomId*",
+            "data": [
+                "sent_time": NSDate.new()
+            ]
+        ], success: nil, failure: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -200,6 +173,41 @@ class GameScene: SKScene {
         })
         
         // --- ここまでイベント登録 ---
+    }
+    
+    func initScene() {
+        self.backgroundColor = UIColor.orangeColor()
+        //let background = SKSpriteNode(imageNamed: "table.png")
+        //background.position = CGPointMake(self.size.width/2, self.size.height/2)
+        //background.xScale = self.size.width /
+        //self.addChild(background)
+        
+        anchorPoint = CGPointMake(0, 1.0)
+        
+        addChild(boardLayer)
+        addChild(textLayer)
+        
+        board = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, CGFloat(NumRows)*TileSize))
+        board.name = "board"
+        board.anchorPoint = CGPointMake(0, 1.0)
+        board.position = BoardLayerPosition
+        
+        
+        let textfield = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, 80))
+        textfield.position = TextFieldPosition
+        textfield.anchorPoint = CGPointMake(0, 1.0)
+        
+        score.fontColor = UIColor.blackColor()
+        score.position = CGPointMake(textfield.position.x*7, textfield.position.y-30)
+        textfield.addChild(score)
+        
+        strLayer.position = TextFieldPosition
+        strLayer.addChild(textfield)
+        textLayer.addChild(strLayer)
+        
+        shapeLayer.position = BoardLayerPosition
+        shapeLayer.addChild(board)
+        boardLayer.addChild(shapeLayer)
     }
     
     override func didMoveToView(view: SKView) {

@@ -17,11 +17,11 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // websocket 初期化
+        // websocket 準備
         webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://133.68.108.19:3000/websocket"))
         
         skView = self.view as? SKView
-        let scene = GameScene(size:self.view.bounds.size, webSocket: webSocket)
+        let scene = TitleScene(size:self.view.bounds.size, webSocket: webSocket)
         skView?.presentScene(scene)
         
         // サーバに接続

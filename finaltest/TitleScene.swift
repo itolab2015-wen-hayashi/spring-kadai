@@ -9,12 +9,19 @@
 import Foundation
 import SpriteKit
 
-class TitleScene : SKScene {
+class TitleScene : BaseScene {
     
-    
-    override init(size: CGSize) {
-        super.init(size: size)
+    override init(size: CGSize, webSocket: WebSocketRailsDispatcher) {
+        super.init(size: size, webSocket: webSocket)
         
+        initScene()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initScene() {
         // 背景の設定
         self.backgroundColor = UIColor.orangeColor()
         
@@ -24,14 +31,26 @@ class TitleScene : SKScene {
         titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 200)
         
         // ボタンを表示する
-        // TODO
+        var startButton = SKLabelNode(text: "START")
+        startButton.name = "startButton"
+        startButton.fontSize = 30
+        startButton.position = CGPointMake(CGRectGetMidX(self.frame), 200)
         
         self.addChild(titleLabel)
-        // TODO
+        self.addChild(startButton)
     }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        let point = (touches.first as! UITouch).locationInNode(self)
+        var touchedNode = nodeAtPoint(point)
+        
+        if (touchedNode.name == "startButton") {
+            // ゲーム開始
+            let scene = GameScene(size: size, webSocket: self.webSocket)
+            let transition = SKTransition.fadeWithDuration(0.5)
+            
+            self.view!.presentScene(scene, transition: transition)
+        }
     }
     
 }
