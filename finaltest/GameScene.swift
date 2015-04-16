@@ -57,9 +57,7 @@ class GameScene: BaseScene {
         // ゲーム参加通知
         webSocket.trigger("join_game", data: [
             "id": "*randomId*",
-            "data": [
-                "sent_time": myDateFormatter.stringFromDate(NSDate.new())
-            ]
+            "data": []
         ], success: nil, failure: nil)
     }
     
@@ -84,6 +82,17 @@ class GameScene: BaseScene {
         // 切断時のイベントハンドラ
         webSocket.bind("connection_closed", callback: { (data) -> Void in
             println("切断された")
+        })
+        
+        //
+        webSocket.bind("notify_delay", callback: { (data) -> Void in
+            // 現在時刻を送る
+            self.webSocket.trigger("join_game", data: [
+                "id": "*randomId*",
+                "data": [
+                    "sent_time": self.myDateFormatter.stringFromDate(NSDate.new())
+                ]
+            ], success: nil, failure: nil)
         })
         
         webSocket.bind("new_game", callback: { (data) -> Void in
