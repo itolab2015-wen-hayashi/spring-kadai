@@ -39,6 +39,9 @@ class GameScene: SKScene {
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     var elapsedTime:Double = -1.0
     
+    // id
+    var myId: String = ""
+    
     init(size:CGSize, webSocket:WebSocketRailsDispatcher){
         self.webSocket = webSocket
 
@@ -105,22 +108,39 @@ class GameScene: SKScene {
             println("切断された")
         })
         
+        webSocket.bind("new_game", callback: { (data) -> Void in
+            println("new_game")
+            
+            // 受信データ取り出し
+            let _data = data as? Dictionary<String, AnyObject>
+            let id: String = _data!["id"] as! String // 自分のid
+            
+            println("id=\(id)")
+            self.myId = id
+        })
+        
         // ゲームイベント (new_round) 受信時のイベントハンドラ
         webSocket.bind("new_round", callback: { (data) -> Void in
             println("new_round")
             
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
-            let time: String = _data!["time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            let triggerTime: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
             
-            // TODO: time 時刻にタイルを表示する
+            println("triggerTime=\(triggerTime)")
+            // TODO: triggerTime 時刻にタイルを表示する
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
         webSocket.bind("winner_approval", callback: { (data) -> Void in
             // タイル消す
             // TODO: implement this
-            
+            /*
+            ##########################################
+            self.removeChildrenInArray([touchedNode])
+            board.removeChildrenInArray([touchedNode])
+            ##########################################
+            */
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
             let minElapsedTime: Double = _data!["elapsed_time"] as! Double
@@ -154,9 +174,15 @@ class GameScene: SKScene {
             
             // データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
-            let winner: String = _data!["winner"] as! String // 勝者の client_id
+            let winner: String = _data!["winner"] as! String // 勝者の id
             
             // TODO: 勝ったかどうか判断して表示する
+            
+            if (self.myId == winner) {
+                self.scorePoint += 100
+            }
+            self.initMakeTile()
+            
         })
         
         // 全試合の終わりのイベントを受信したときのイベントハンドラ
@@ -165,9 +191,12 @@ class GameScene: SKScene {
             
             // データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
-            let winner: String = _data!["winner"] as! String // 勝者の client_id
+            let winner: String = _data!["winner"] as! String // 勝者の id
             
             // TODO: 勝ったかどうか判断して表示する
+            if (self.myId == winner) {
+                println("You win")
+            }
         })
         
         // --- ここまでイベント登録 ---
