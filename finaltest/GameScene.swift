@@ -38,7 +38,8 @@ class GameScene: BaseScene {
     var elapsedTime:Double = -1.0
     
     // 次の triggerTime
-    var nextTriggerTime: NSDate = NSDate.new()
+    var prevCurrentTime: CFTimeInterval = 0
+    var timeToWait: CFTimeInterval = 0
     
     
     override init(size: CGSize, gameViewController: GameViewController) {
@@ -77,12 +78,14 @@ class GameScene: BaseScene {
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
             let triggerTime: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
-            self.nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
+            let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
             
             println("triggerTime=\(triggerTime)")
-            println("nextTriggerTime=\(self.nextTriggerTime)")
+            println("nextTriggerTime=\(nextTriggerTime)")
             
             // TODO: self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
+            self.timeToWait = nextTriggerTime.timeIntervalSinceNow
+            println("timeToWait=\(self.timeToWait)")
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
@@ -300,6 +303,16 @@ class GameScene: BaseScene {
     }
     
     override func update(currentTime: CFTimeInterval) {
+        // 前回の update() からの経過時間
+        let delta = currentTime - self.prevCurrentTime
+        
+        // タイルを表示する
+        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0) {
+            println("boom")
+            initMakeTile()
+        }
+        self.timeToWait -= delta
+        
         /* Called before each frame is rendered */
         score.text = "Score : \(scorePoint)"
         
@@ -308,5 +321,7 @@ class GameScene: BaseScene {
                 self.gameover()
             }
         }
+        
+        self.prevCurrentTime = currentTime
     }
 }
