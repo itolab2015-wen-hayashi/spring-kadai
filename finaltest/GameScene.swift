@@ -33,6 +33,9 @@ class GameScene: BaseScene {
     var gameoverFlag = false
     var scorePoint = 0
     
+    // 最後に追加したタイル
+    var currentTile: SKSpriteNode!
+    
     // タイルが表示された時刻
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     var elapsedTime:Double = -1.0
@@ -92,12 +95,8 @@ class GameScene: BaseScene {
         webSocket().bind("winner_approval", callback: { (data) -> Void in
             // タイル消す
             // TODO: implement this
-            /*
-            ##########################################
-            self.removeChildrenInArray([touchedNode])
-            board.removeChildrenInArray([touchedNode])
-            ##########################################
-            */
+
+            self.currentTile.removeFromParent()
             println("winner_approval")
 
             // 受信データ取り出し
@@ -235,13 +234,14 @@ class GameScene: BaseScene {
         tileArrayPos[i][j] = sprite.position
         
         board.addChild(sprite)
+        currentTile = sprite
         
         tileDisplayedTime = NSDate.timeIntervalSinceReferenceDate()
         elapsedTime = -1.0
     }
     
     
-    func makeTileOne()->SKSpriteNode{
+    func makeTileOne() -> SKSpriteNode{
         let sprite = SKSpriteNode()
         sprite.anchorPoint = CGPointMake(0, 1.0)
         sprite.alpha *= 1.0
