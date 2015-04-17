@@ -35,4 +35,11 @@ class BaseScene : SKScene {
     func myId() -> String {
         return gameViewController.myId
     }
+    
+    //
+    // サーバとの通信で通常使う NSDateFormatter を返す
+    //
+    func defaultDateFormatter() -> NSDateFormatter {
+        return gameViewController.myDateFormatter
+    }
 }
