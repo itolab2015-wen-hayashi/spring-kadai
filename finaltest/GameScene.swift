@@ -98,6 +98,8 @@ class GameScene: BaseScene {
             board.removeChildrenInArray([touchedNode])
             ##########################################
             */
+            println("winner_approval")
+
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
             let minElapsedTime: Double = _data!["elapsed_time"] as! Double
@@ -112,6 +114,11 @@ class GameScene: BaseScene {
                     wsdata["data"] = [
                         "approve": false,
                         "elapsed_time": self.elapsedTime
+                    ]
+                } else {
+                    // approve する
+                    wsdata["data"] = [
+                        "approve": true
                     ]
                 }
             } else {
