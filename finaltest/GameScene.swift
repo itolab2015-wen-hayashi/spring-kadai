@@ -40,13 +40,8 @@ class GameScene: BaseScene {
     // id
     var myId: String = ""
     
-    let myDateFormatter: NSDateFormatter = NSDateFormatter()
-    
     override init(size:CGSize, webSocket:WebSocketRailsDispatcher){
         super.init(size: size, webSocket: webSocket)
-        
-        myDateFormatter.locale = NSLocale(localeIdentifier: "ja")
-        myDateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
         
         // websocket 設定
         initWebSocket();
@@ -73,27 +68,6 @@ class GameScene: BaseScene {
         // ------------------
         
         // --- ここからイベント登録 ---
-        
-        // 接続時のイベントハンドラ
-        webSocket.bind("connection_opened", callback: { (data) -> Void in
-            println("接続した！")
-        })
-        
-        // 切断時のイベントハンドラ
-        webSocket.bind("connection_closed", callback: { (data) -> Void in
-            println("切断された")
-        })
-        
-        //
-        webSocket.bind("notify_delay", callback: { (data) -> Void in
-            // 現在時刻を送る
-            self.webSocket.trigger("join_game", data: [
-                "id": "*randomId*",
-                "data": [
-                    "sent_time": self.myDateFormatter.stringFromDate(NSDate.new())
-                ]
-            ], success: nil, failure: nil)
-        })
         
         webSocket.bind("new_game", callback: { (data) -> Void in
             println("new_game")
