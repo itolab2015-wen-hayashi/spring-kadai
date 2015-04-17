@@ -90,6 +90,13 @@ class GameScene: BaseScene {
             
             println("triggerTime=\(triggerTime)")
             // TODO: triggerTime 時刻にタイルを表示する
+            
+            let now = NSDate.timeIntervalSinceReferenceDate()
+            let data = NSDate(timeIntervalSince1970: now)
+            if (data == triggerTime){
+                
+            }
+
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
@@ -260,6 +267,7 @@ class GameScene: BaseScene {
                 for node in self.board.children{
                     if(touchedNode == node as! NSObject && !moveActionFlag){
                         let now = NSDate.timeIntervalSinceReferenceDate()
+                        //println("now=\(now)")
                         elapsedTime = (now - self.tileDisplayedTime) * 1000
                         println("elapsed_Time=\(elapsedTime)")
                         
