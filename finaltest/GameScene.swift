@@ -138,7 +138,7 @@ class GameScene: BaseScene {
             if (self.myId() == winner) {
                 self.scorePoint += 100
             }
-            self.initMakeTile()
+            //self.initMakeTile()
             
         })
         
@@ -196,7 +196,7 @@ class GameScene: BaseScene {
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        initMakeTile()
+        //initMakeTile()
         
     }
     
@@ -276,8 +276,8 @@ class GameScene: BaseScene {
                         
                         self.removeChildrenInArray([touchedNode])
                         board.removeChildrenInArray([touchedNode])
-                        scorePoint += 100
-                        initMakeTile()
+                        //scorePoint += 100
+                        //initMakeTile()
                         
                     }
                 }
