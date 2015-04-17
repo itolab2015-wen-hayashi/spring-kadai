@@ -20,7 +20,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         myDateFormatter.locale = NSLocale(localeIdentifier: "ja")
-        myDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        myDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"
         
         super.viewDidLoad()
         
