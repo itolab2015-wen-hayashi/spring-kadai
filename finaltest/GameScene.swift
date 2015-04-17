@@ -42,7 +42,7 @@ class GameScene: BaseScene {
     
     // 次の triggerTime
     var prevCurrentTime: CFTimeInterval = 0
-    var timeToWait: CFTimeInterval = 0
+    var timeToWait: CFTimeInterval = -1
     
     
     override init(size: CGSize, gameViewController: GameViewController) {
@@ -144,8 +144,6 @@ class GameScene: BaseScene {
             if (self.myId() == winner) {
                 self.scorePoint += 100
             }
-            //self.initMakeTile()
-            
         })
         
         // 全試合の終わりのイベントを受信したときのイベントハンドラ
@@ -174,14 +172,10 @@ class GameScene: BaseScene {
         
         anchorPoint = CGPointMake(0, 1.0)
         
-        addChild(boardLayer)
-        addChild(textLayer)
-        
         board = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, CGFloat(NumRows)*TileSize))
         board.name = "board"
         board.anchorPoint = CGPointMake(0, 1.0)
         board.position = BoardLayerPosition
-        
         
         let textfield = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, 80))
         textfield.position = TextFieldPosition
@@ -198,12 +192,13 @@ class GameScene: BaseScene {
         shapeLayer.position = BoardLayerPosition
         shapeLayer.addChild(board)
         boardLayer.addChild(shapeLayer)
+        
+        addChild(boardLayer)
+        addChild(textLayer)
     }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        //initMakeTile()
-        
     }
     
     func randomColor()->UIColor{
