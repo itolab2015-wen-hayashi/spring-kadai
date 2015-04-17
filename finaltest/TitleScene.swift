@@ -11,8 +11,8 @@ import SpriteKit
 
 class TitleScene : BaseScene {
     
-    override init(size: CGSize, webSocket: WebSocketRailsDispatcher) {
-        super.init(size: size, webSocket: webSocket)
+    override init(size: CGSize, gameViewController: GameViewController) {
+        super.init(size: size, gameViewController: gameViewController)
         
         initScene()
     }
@@ -46,7 +46,7 @@ class TitleScene : BaseScene {
         
         if (touchedNode.name == "startButton") {
             // ゲーム開始
-            let scene = GameScene(size: size, webSocket: self.webSocket)
+            let scene = GameScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
             
             self.view!.presentScene(scene, transition: transition)

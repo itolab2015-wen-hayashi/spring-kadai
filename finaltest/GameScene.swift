@@ -37,11 +37,9 @@ class GameScene: BaseScene {
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     var elapsedTime:Double = -1.0
     
-    // id
-    var myId: String = ""
     
-    override init(size:CGSize, webSocket:WebSocketRailsDispatcher){
-        super.init(size: size, webSocket: webSocket)
+    override init(size: CGSize, gameViewController: GameViewController) {
+        super.init(size: size, gameViewController: gameViewController)
         
         // websocket 設定
         initWebSocket();
@@ -50,7 +48,7 @@ class GameScene: BaseScene {
         initScene();
         
         // ゲーム参加通知
-        webSocket.trigger("join_game", data: [
+        webSocket().trigger("join_game", data: [
             "id": "*randomId*",
             "data": []
         ], success: nil, failure: nil)
@@ -69,19 +67,8 @@ class GameScene: BaseScene {
         
         // --- ここからイベント登録 ---
         
-        webSocket.bind("new_game", callback: { (data) -> Void in
-            println("new_game")
-            
-            // 受信データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let id: String = _data!["id"] as! String // 自分のid
-            
-            println("id=\(id)")
-            self.myId = id
-        })
-        
         // ゲームイベント (new_round) 受信時のイベントハンドラ
-        webSocket.bind("new_round", callback: { (data) -> Void in
+        webSocket().bind("new_round", callback: { (data) -> Void in
             println("new_round")
             
             // 受信データ取り出し
@@ -100,7 +87,7 @@ class GameScene: BaseScene {
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
-        webSocket.bind("winner_approval", callback: { (data) -> Void in
+        webSocket().bind("winner_approval", callback: { (data) -> Void in
             // タイル消す
             // TODO: implement this
             /*
@@ -133,11 +120,11 @@ class GameScene: BaseScene {
             }
             
             // データ送信
-            self.webSocket.trigger("winner_approval", data: wsdata, success: nil, failure: nil)
+            self.webSocket().trigger("winner_approval", data: wsdata, success: nil, failure: nil)
         })
         
         // 一試合の終わりのイベントを受信したときのイベントハンドラ
-        webSocket.bind("close_round", callback: { (data) -> Void in
+        webSocket().bind("close_round", callback: { (data) -> Void in
             println("close_round")
             
             // データ取り出し
@@ -146,7 +133,7 @@ class GameScene: BaseScene {
             
             // TODO: 勝ったかどうか判断して表示する
             
-            if (self.myId == winner) {
+            if (self.myId() == winner) {
                 self.scorePoint += 100
             }
             self.initMakeTile()
@@ -154,7 +141,7 @@ class GameScene: BaseScene {
         })
         
         // 全試合の終わりのイベントを受信したときのイベントハンドラ
-        webSocket.bind("close_game", callback: { (data) -> Void in
+        webSocket().bind("close_game", callback: { (data) -> Void in
             println ("close_game")
             
             // データ取り出し
@@ -162,7 +149,7 @@ class GameScene: BaseScene {
             let winner: String = _data!["winner"] as! String // 勝者の id
             
             // TODO: 勝ったかどうか判断して表示する
-            if (self.myId == winner) {
+            if (self.myId() == winner) {
                 println("You win")
             }
         })
@@ -279,7 +266,7 @@ class GameScene: BaseScene {
                         ]
                         
                         // TODO webSocket.trigger でメッセージを送る
-                        webSocket.trigger("tile_pushed", data: data, success: { (data) -> Void in
+                        webSocket().trigger("tile_pushed", data: data, success: { (data) -> Void in
                             println("tile_pushed: success")
                         }, failure: { (data) -> Void in
                             println("tile_pushed: failure")

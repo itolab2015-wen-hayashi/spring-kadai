@@ -11,10 +11,10 @@ import SpriteKit
 
 class BaseScene : SKScene {
     
-    var webSocket: WebSocketRailsDispatcher
+    let gameViewController: GameViewController
     
-    init(size: CGSize, webSocket: WebSocketRailsDispatcher) {
-        self.webSocket = webSocket
+    init(size: CGSize, gameViewController: GameViewController) {
+        self.gameViewController = gameViewController
         super.init(size: size)
     }
 
@@ -22,4 +22,17 @@ class BaseScene : SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //
+    // WebSocketRailsDispatcher インスタンスを返す
+    //
+    func webSocket() -> WebSocketRailsDispatcher {
+        return gameViewController.webSocket
+    }
+    
+    //
+    // 自分の id を返す
+    //
+    func myId() -> String {
+        return gameViewController.myId
+    }
 }

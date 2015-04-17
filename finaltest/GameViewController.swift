@@ -14,6 +14,8 @@ class GameViewController: UIViewController {
     var skView : SKView?
     var webSocket: WebSocketRailsDispatcher!
     
+    var myId: String = ""
+    var clients: Array<String> = []
     let myDateFormatter: NSDateFormatter = NSDateFormatter()
     
     override func viewDidLoad() {
@@ -25,7 +27,7 @@ class GameViewController: UIViewController {
         initWebSocket()
         
         skView = self.view as? SKView
-        let scene = TitleScene(size:self.view.bounds.size, webSocket: webSocket)
+        let scene = TitleScene(size: self.skView!.bounds.size, gameViewController: self)
         skView?.presentScene(scene)
         
         // サーバに接続
@@ -46,6 +48,16 @@ class GameViewController: UIViewController {
             println("切断された")
         })
         
+        // 接続後最初のイベント connect_accepted のイベントハンドラ
+        webSocket.bind("connect_accepted", callback: { (data) -> Void in
+            println("connect_accepted")
+            
+            // 自分の id を記録
+            let _data = data as? Dictionary<String, AnyObject>
+            self.myId = (_data!["id"] as? String)! // 自分のid
+            println("myId=\(self.myId)")
+        })
+        
         //
         webSocket.bind("check_delay", callback: { (data) -> Void in
             println("check_delay")
@@ -56,7 +68,17 @@ class GameViewController: UIViewController {
                 "data": [
                     "sent_time": self.myDateFormatter.stringFromDate(NSDate.new())
                 ]
-                ], success: nil, failure: nil)
+            ], success: nil, failure: nil)
+        })
+        
+        // クライアントリスト受信時のイベントハンドラ
+        webSocket.bind("client_list", callback: { (data) -> Void in
+            println("client_list")
+            
+            // クライアントリストを更新する
+            let _data = data as? Dictionary<String, AnyObject>
+            self.clients = (_data!["clients"] as? Array<String>)!
+            println("clients = \(self.clients)")
         })
     }
 
