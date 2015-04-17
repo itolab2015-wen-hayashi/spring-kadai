@@ -37,6 +37,9 @@ class GameScene: BaseScene {
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     var elapsedTime:Double = -1.0
     
+    // 次の triggerTime
+    var nextTriggerTime: NSDate = NSDate.new()
+    
     
     override init(size: CGSize, gameViewController: GameViewController) {
         super.init(size: size, gameViewController: gameViewController)
@@ -78,12 +81,9 @@ class GameScene: BaseScene {
             println("triggerTime=\(triggerTime)")
             // TODO: triggerTime 時刻にタイルを表示する
             
-            let now = NSDate.timeIntervalSinceReferenceDate()
-            let data = NSDate(timeIntervalSince1970: now)
-            if (data == triggerTime){
-                
-            }
-
+            // テスト用
+            self.nextTriggerTime = NSDate(timeIntervalSinceNow: 1) // 1秒後の時刻
+            // TODO: self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
