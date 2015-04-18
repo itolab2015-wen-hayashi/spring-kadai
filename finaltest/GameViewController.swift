@@ -62,10 +62,15 @@ class GameViewController: UIViewController {
         webSocket.bind("check_delay", callback: { (data) -> Void in
             println("check_delay")
             
+            // 受信データ取り出し
+            let _data = data as? Dictionary<String, AnyObject>
+            let recv_time: String = _data!["sent_time"] as! String
+            
             // 現在時刻を送る
             self.webSocket.trigger("update_delay", data: [
                 "id": "*randomId*",
                 "data": [
+                    "recv_time": recv_time,
                     "sent_time": self.myDateFormatter.stringFromDate(NSDate.new())
                 ]
             ], success: nil, failure: nil)
