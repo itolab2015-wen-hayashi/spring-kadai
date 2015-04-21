@@ -81,10 +81,18 @@ class GameScene: BaseScene {
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
             let triggerTime: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            let nextX = _data!["x"] as! Int
+            let nextY = _data!["y"] as! Int
+            
+            //println("nextX =\(nextX)")
+            //println("nextY =\(nextY)")
+            
             let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
             
             println("triggerTime=\(triggerTime)")
             println("nextTriggerTime=\(nextTriggerTime)")
+
+            
             
             // TODO: self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
             self.timeToWait = nextTriggerTime.timeIntervalSinceNow
@@ -221,12 +229,14 @@ class GameScene: BaseScene {
     }
     
     func initMakeTile(){
-        var i = Int(arc4random()) % 6
-        var j = Int(arc4random()) % 10
+        //var i = Int(arc4random()) % 6
+        //var j = Int(arc4random()) % 10
+        
+        
         let sprite = makeTileOne()
         
-        sprite.position = CGPointMake(CGFloat(i)*TileSize,-CGFloat(j)*TileSize)
-        tileArrayPos[i][j] = sprite.position
+        sprite.position = CGPointMake(CGFloat(nextX)*TileSize,-CGFloat(nextY)*TileSize)
+        tileArrayPos[self.nextX][self.nextY] = sprite.position
         
         board.addChild(sprite)
         currentTile = sprite
