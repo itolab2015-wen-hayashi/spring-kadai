@@ -41,6 +41,14 @@ class GameViewController: UIViewController {
         // 接続時のイベントハンドラ
         webSocket.bind("connection_opened", callback: { (data) -> Void in
             println("接続した！")
+            
+            let device = UIDevice.currentDevice()
+            self.webSocket.trigger("authenticate", data: [
+                "id": "*randomId*",
+                "data": [
+                    "name": device.name
+                ]
+            ], success: nil, failure: nil)
         })
         
         // 切断時のイベントハンドラ
