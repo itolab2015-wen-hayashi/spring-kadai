@@ -199,7 +199,6 @@ class GameScene: BaseScene {
     
     override func didMoveToView(view: SKView) {
         //initMakeTile()
-        
     }
     
     func randomColor()->UIColor{
