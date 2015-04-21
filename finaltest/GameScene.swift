@@ -35,6 +35,7 @@ class GameScene: BaseScene {
     
     // 最後に追加したタイル
     var currentTile: SKSpriteNode!
+    var nextTile: SKSpriteNode!
     
     // タイルが表示された時刻
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
@@ -84,17 +85,18 @@ class GameScene: BaseScene {
             let nextX = _data!["x"] as! Int
             let nextY = _data!["y"] as! Int
             
-            //println("nextX =\(nextX)")
-            //println("nextY =\(nextY)")
+            println("nextX =\(nextX)")
+            println("nextY =\(nextY)")
+            
+            // タイル生成
+            self.nextTile = self.makeTile(nextX, y: nextY)
             
             let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
             
             println("triggerTime=\(triggerTime)")
             println("nextTriggerTime=\(nextTriggerTime)")
-
             
-            
-            // TODO: self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
+            // self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
             self.timeToWait = nextTriggerTime.timeIntervalSinceNow
             println("timeToWait=\(self.timeToWait)")
         })
@@ -228,23 +230,20 @@ class GameScene: BaseScene {
         return color
     }
     
-    func initMakeTile(){
-        //var i = Int(arc4random()) % 6
-        //var j = Int(arc4random()) % 10
+    func showTile(tile: SKSpriteNode) {
+        board.addChild(tile)
         
-        
-        let sprite = makeTileOne()
-        
-        sprite.position = CGPointMake(CGFloat(nextX)*TileSize,-CGFloat(nextY)*TileSize)
-        tileArrayPos[self.nextX][self.nextY] = sprite.position
-        
-        board.addChild(sprite)
-        currentTile = sprite
-        
+        currentTile = tile
         tileDisplayedTime = NSDate.timeIntervalSinceReferenceDate()
         elapsedTime = -1.0
     }
     
+    func makeTile(x: Int, y: Int) -> SKSpriteNode {
+        let sprite = makeTileOne()
+        sprite.position = CGPointMake(CGFloat(x)*TileSize,-CGFloat(y)*TileSize)
+        tileArrayPos[x][y] = sprite.position
+        return sprite
+    }
     
     func makeTileOne() -> SKSpriteNode{
         let sprite = SKSpriteNode()
@@ -326,7 +325,8 @@ class GameScene: BaseScene {
         // タイルを表示する
         if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0) {
             println("boom")
-            initMakeTile()
+            self.showTile(self.nextTile)
+            self.nextTile = nil
         }
         self.timeToWait -= delta
         
