@@ -84,12 +84,13 @@ class GameScene: BaseScene {
             let triggerTime: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
             let nextX = _data!["x"] as! Int
             let nextY = _data!["y"] as! Int
+            let nextColor = _data!["color"] as! Int
             
             println("nextX =\(nextX)")
             println("nextY =\(nextY)")
             
             // タイル生成
-            self.nextTile = self.makeTile(nextX, y: nextY)
+            self.nextTile = self.makeTile(nextX, y: nextY, z: nextColor)
             
             let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
             
@@ -211,9 +212,9 @@ class GameScene: BaseScene {
         //initMakeTile()
     }
     
-    func randomColor()->UIColor{
+    func randomColor(x: Int)->UIColor{
         //0:red,1:green,2:blue,3:yellow
-        let rnd = arc4random()%4
+        let rnd = x
         var color:UIColor!
         switch rnd{
         case 0:
@@ -238,18 +239,18 @@ class GameScene: BaseScene {
         elapsedTime = -1.0
     }
     
-    func makeTile(x: Int, y: Int) -> SKSpriteNode {
-        let sprite = makeTileOne()
+    func makeTile(x: Int, y: Int, z:Int) -> SKSpriteNode {
+        let sprite = makeTileOne(z)
         sprite.position = CGPointMake(CGFloat(x)*TileSize,-CGFloat(y)*TileSize)
         tileArrayPos[x][y] = sprite.position
         return sprite
     }
     
-    func makeTileOne() -> SKSpriteNode{
+    func makeTileOne(x: Int) -> SKSpriteNode{
         let sprite = SKSpriteNode()
         sprite.anchorPoint = CGPointMake(0, 1.0)
         sprite.alpha *= 1.0
-        sprite.color = randomColor()
+        sprite.color = randomColor(x)
         //sprite.color = UIColor.greenColor()
         sprite.size = CGSizeMake(TileSize-1, TileSize-1)
         
