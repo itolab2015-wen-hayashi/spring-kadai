@@ -201,7 +201,6 @@ class GameScene: BaseScene {
     }
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
         //initMakeTile()
         
     }
@@ -253,7 +252,7 @@ class GameScene: BaseScene {
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        /* Called when a touch begins */
+        /* タッチされるとき */
         //var deleteColumnsArray = Array(arrayLiteral:SKNode())
         if(gameoverFlag == false){
             for touch in touches {
@@ -290,8 +289,12 @@ class GameScene: BaseScene {
                 }
             }
         }
+        if(gameoverFlag == true){
+            self.reset()
+        }
     }
     
+    /*ゲームが終わるとき */
     func gameover(){
         gameoverLabel.text = "You Win"
         gameoverLabel.fontSize = 100
@@ -301,6 +304,7 @@ class GameScene: BaseScene {
         gameoverFlag = true
     }
     
+    /*ゲームリセット*/
     func reset(){
         gameoverFlag = false
         
