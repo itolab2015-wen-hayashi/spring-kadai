@@ -343,7 +343,7 @@ class GameScene: BaseScene {
         let delta = currentTime - self.prevCurrentTime
         
         // タイルを表示する
-        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0 && (self.scorePoint < 1000)) {
+        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0) {
             println("boom")
             self.showTile(self.nextTile)
             self.nextTile = nil
