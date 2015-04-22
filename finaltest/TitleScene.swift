@@ -26,7 +26,7 @@ class TitleScene : BaseScene {
         self.backgroundColor = UIColor.orangeColor()
         
         // タイトルを表示する
-        var titleLabel = SKLabelNode(text: "GuGame")
+        var titleLabel = SKLabelNode(text: "TôT")
         titleLabel.fontSize = 50
         titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 200)
         
