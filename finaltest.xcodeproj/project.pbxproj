@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2611A17F1AE7692F000F2DD3 /* GameoverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2611A17E1AE7692E000F2DD3 /* GameoverScene.swift */; };
 		26375E971ACC305A00477B7C /* table.png in Resources */ = {isa = PBXBuildFile; fileRef = 26375E961ACC305A00477B7C /* table.png */; };
 		2FDCC4451ADF6970004B0A36 /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDCC4441ADF6970004B0A36 /* TitleScene.swift */; };
 		2FDCC4471ADFACDB004B0A36 /* BaseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDCC4461ADFACDB004B0A36 /* BaseScene.swift */; };
@@ -32,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2611A17E1AE7692E000F2DD3 /* GameoverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameoverScene.swift; sourceTree = "<group>"; };
 		26375E961ACC305A00477B7C /* table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table.png; sourceTree = SOURCE_ROOT; };
 		2F4F4E581AD7A1E000FA8C85 /* objc-headers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "objc-headers.h"; sourceTree = "<group>"; };
 		2FDCC4441ADF6970004B0A36 /* TitleScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				D57964751AC06BEB00FD56E2 /* GameScene.sks */,
 				D57964771AC06BEB00FD56E2 /* GameScene.swift */,
 				2FDCC4441ADF6970004B0A36 /* TitleScene.swift */,
+				2611A17E1AE7692E000F2DD3 /* GameoverScene.swift */,
 				D57964791AC06BEB00FD56E2 /* GameViewController.swift */,
 				D579647B1AC06BEB00FD56E2 /* Main.storyboard */,
 				D579647E1AC06BEB00FD56E2 /* Images.xcassets */,
@@ -292,6 +295,7 @@
 			files = (
 				D57964781AC06BEB00FD56E2 /* GameScene.swift in Sources */,
 				D579647A1AC06BEB00FD56E2 /* GameViewController.swift in Sources */,
+				2611A17F1AE7692F000F2DD3 /* GameoverScene.swift in Sources */,
 				D57964741AC06BEB00FD56E2 /* AppDelegate.swift in Sources */,
 				2FDCC4451ADF6970004B0A36 /* TitleScene.swift in Sources */,
 				2FDCC4471ADFACDB004B0A36 /* BaseScene.swift in Sources */,

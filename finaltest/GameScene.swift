@@ -90,7 +90,9 @@ class GameScene: BaseScene {
             println("nextY =\(nextY)")
             
             // タイル生成
+            //if(self.scorePoint < 800){
             self.nextTile = self.makeTile(nextX, y: nextY, z: nextColor)
+            //}
             
             let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
             
@@ -100,6 +102,7 @@ class GameScene: BaseScene {
             // self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
             self.timeToWait = nextTriggerTime.timeIntervalSinceNow
             println("timeToWait=\(self.timeToWait)")
+            
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
@@ -169,6 +172,14 @@ class GameScene: BaseScene {
             if (self.myId() == winner) {
                 println("You win")
             }
+            else{
+                self.reset()
+            }
+            //let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
+            //let transition = SKTransition.fadeWithDuration(0.5)
+                
+            //self.view!.presentScene(scene, transition: transition)
+            
         })
         
         // --- ここまでイベント登録 ---
@@ -233,7 +244,6 @@ class GameScene: BaseScene {
     
     func showTile(tile: SKSpriteNode) {
         board.addChild(tile)
-        
         currentTile = tile
         tileDisplayedTime = NSDate.timeIntervalSinceReferenceDate()
         elapsedTime = -1.0
@@ -317,6 +327,11 @@ class GameScene: BaseScene {
         gameoverLabel.removeFromParent()
         
         scorePoint = 0
+        
+        let scene = GameoverScene(size: size, gameViewController: self.gameViewController)
+        let transition = SKTransition.fadeWithDuration(0.5)
+        
+        self.view!.presentScene(scene, transition: transition)
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -324,7 +339,7 @@ class GameScene: BaseScene {
         let delta = currentTime - self.prevCurrentTime
         
         // タイルを表示する
-        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0) {
+        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0 && (self.scorePoint < 800)) {
             println("boom")
             self.showTile(self.nextTile)
             self.nextTile = nil
