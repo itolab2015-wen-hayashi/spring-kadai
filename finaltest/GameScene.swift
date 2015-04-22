@@ -171,8 +171,12 @@ class GameScene: BaseScene {
             // TODO: 勝ったかどうか判断して表示する
             if (self.myId() == winner) {
                 println("You win")
+                self.gameover()
+                self.reset()
+                //self.gameoverFlag = true
             }
             else{
+                self.gameoverFlag = true
                 self.reset()
             }
             //let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
@@ -305,9 +309,9 @@ class GameScene: BaseScene {
                 }
             }
         }
-        if(gameoverFlag == true){
-            self.reset()
-        }
+        //if(gameoverFlag == true){
+        //    self.reset()
+        //}
     }
     
     /*ゲームが終わるとき */
@@ -349,11 +353,13 @@ class GameScene: BaseScene {
         /* Called before each frame is rendered */
         score.text = "Score : \(scorePoint)"
         
+        /*
         if(gameoverFlag == false){
             if(scorePoint >= 800){
                 self.gameover()
             }
         }
+        */
         
         self.prevCurrentTime = currentTime
     }
