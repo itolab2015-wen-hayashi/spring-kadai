@@ -49,7 +49,7 @@ class TitleScene : BaseScene {
             let scene = GameScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
             
-            self.view!.presentScene(scene, transition: transition)
+            (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
         }
     }
     
