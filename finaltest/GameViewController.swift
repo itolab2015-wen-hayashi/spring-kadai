@@ -37,7 +37,7 @@ class GameViewController: UIViewController {
     
     func initWebSocket() {
         // websocket 準備
-        webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://133.68.108.19:3000/websocket"))
+        webSocket = WebSocketRailsDispatcher(url: NSURL(string: "ws://133.68.108.19:8080/websocket"))
         
         // 接続時のイベントハンドラ
         webSocket.bind("connection_opened", callback: { (data) -> Void in
