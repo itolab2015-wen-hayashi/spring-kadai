@@ -67,7 +67,7 @@ class TitleScene : BaseScene {
         let point = (touches.first as! UITouch).locationInNode(self)
         var touchedNode = nodeAtPoint(point)
         
-        if (touchedNode.name == "startButton") {
+        if (touchedNode.name == "startButton" && isStartButtonEnabled) {
             // ゲーム開始
             let scene = GameScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
