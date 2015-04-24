@@ -56,10 +56,7 @@ class GameScene: BaseScene {
         initScene();
         
         // ゲーム参加通知
-        webSocket().trigger("join_game", data: [
-            "id": "*randomId*",
-            "data": []
-        ], success: nil, failure: nil)
+        webSocket().trigger("join_game", data: wsData([:]), success: nil, failure: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -277,12 +274,9 @@ class GameScene: BaseScene {
                         elapsedTime = (now - self.tileDisplayedTime) * 1000
                         println("elapsed_Time=\(elapsedTime)")
                         
-                        var data: Dictionary = [
-                            "id": "*randomId*",
-                            "data": [
-                                "elapsed_time": elapsedTime
-                            ]
-                        ]
+                        var data: NSDictionary = self.wsData([
+                            "elapsed_time": elapsedTime
+                        ])
                         
                         // TODO webSocket.trigger でメッセージを送る
                         webSocket().trigger("tile_pushed", data: data, success: { (data) -> Void in
