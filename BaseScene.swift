@@ -42,4 +42,14 @@ class BaseScene : SKScene {
     func defaultDateFormatter() -> NSDateFormatter {
         return gameViewController.myDateFormatter
     }
+    
+    //
+    // WebSocketRails で利用するデータを生成する
+    //
+    func wsData(data: NSDictionary) -> NSDictionary {
+        return [
+            "id": "*randomId*",
+            "data": data
+        ]
+    }
 }

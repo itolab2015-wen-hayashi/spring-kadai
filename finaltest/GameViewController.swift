@@ -64,6 +64,7 @@ class GameViewController: UIViewController {
             // 自分の id を記録
             let _data = data as? Dictionary<String, AnyObject>
             self.myId = (_data!["id"] as? String)! // 自分のid
+            
             println("myId=\(self.myId)")
         })
         

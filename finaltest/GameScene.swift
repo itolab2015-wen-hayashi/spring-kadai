@@ -118,31 +118,22 @@ class GameScene: BaseScene {
             let minElapsedTime: Double = _data!["elapsed_time"] as! Double
             
             // 送信データを生成
-            var wsdata: Dictionary = [
-                "id": "*randomId*",
-                "data": []
-            ]
+            var wsdata: NSMutableDictionary = [:]
             if (0 < self.elapsedTime) {
                 if (self.elapsedTime < minElapsedTime) {
-                    wsdata["data"] = [
-                        "approve": false,
-                        "elapsed_time": self.elapsedTime
-                    ]
+                    wsdata["approve"] = false
+                    wsdata["elapsed_time"] = self.elapsedTime
                 } else {
                     // approve する
-                    wsdata["data"] = [
-                        "approve": true
-                    ]
+                    wsdata["approve"] = true
                 }
             } else {
                 // approve する
-                wsdata["data"] = [
-                    "approve": true
-                ]
+                wsdata["approve"] = true
             }
             
             // データ送信
-            self.webSocket().trigger("winner_approval", data: wsdata, success: nil, failure: nil)
+            self.webSocket().trigger("winner_approval", data: self.wsData(wsdata), success: nil, failure: nil)
         })
         
         // 一試合の終わりのイベントを受信したときのイベントハンドラ
