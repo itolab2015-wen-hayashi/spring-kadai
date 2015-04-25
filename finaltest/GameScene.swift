@@ -14,7 +14,7 @@ let NumRows = 10
 let myBoundSize: CGSize = UIScreen.mainScreen().bounds.size
 let myBoundSizeStr: NSString = "Bounds width: \(myBoundSize.width) height: \(myBoundSize.height)"
 
-let TileSize:CGFloat = myBoundSize.width * 0.09
+let TileSize:CGFloat = myBoundSize.width * 0.1
 
 let BoardLayerPosition = CGPointMake(0.12*myBoundSize.width, -0.2*myBoundSize.width)
 let TextFieldPosition = CGPointMake(20, -20)
@@ -200,7 +200,7 @@ class GameScene: BaseScene {
         //textfield.anchorPoint = CGPointMake(0, 1.0)
         
         score.fontColor = UIColor.blackColor()
-        score.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)*0.3)
+        score.position = CGPointMake(CGRectGetMidX(self.frame)*0.8, CGRectGetMidY(self.frame)*0.25)
         textfield.addChild(score)
         
         strLayer.position = TextFieldPosition
