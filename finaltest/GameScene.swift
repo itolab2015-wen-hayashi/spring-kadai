@@ -298,9 +298,9 @@ class GameScene: BaseScene {
     /* ゲームオーバー */
     func gameover(won: Bool) {
         // 画面に表示
-        gameoverLabel.text = won ? "You Win" : "You Lost"
+        gameoverLabel.text = won ? "You Win" : "You Lose"
         gameoverLabel.fontSize = myBoundSize.width*0.2
-        gameoverLabel.fontColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: 1)
+        gameoverLabel.fontColor = won ? SKColor(red: 0.7, green: 0, blue: 0, alpha: 1) : SKColor.blueColor()
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
         
