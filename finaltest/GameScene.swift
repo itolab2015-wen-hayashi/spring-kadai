@@ -186,7 +186,7 @@ class GameScene: BaseScene {
         //textfield.anchorPoint = CGPointMake(0, 1.0)
         
         scoreLabel.fontColor = UIColor.blackColor()
-        scoreLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)*0.3)
+        scoreLabel.position = CGPointMake(CGRectGetMidX(self.frame)*0.8, CGRectGetMidY(self.frame)*0.25)
         textfield.addChild(scoreLabel)
         
         strLayer.position = TextFieldPosition
