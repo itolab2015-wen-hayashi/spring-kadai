@@ -300,7 +300,7 @@ class GameScene: BaseScene {
         let gameoverLabel = SKLabelNode()
         gameoverLabel.text = won ? "You Win" : "Try again!"
         gameoverLabel.fontSize = myBoundSize.width*0.2
-        gameoverLabel.fontColor = won ? SKColor(red: 0.7, green: 0, blue: 0, alpha: 1) : SKColor.blueColor()
+        gameoverLabel.fontColor = won ? SKColor(red: 0.7, green: 0, blue: 0, alpha: 1) : SKColor(red: 0, green: 0, blue: 0.7, alpha: 1)
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
         
