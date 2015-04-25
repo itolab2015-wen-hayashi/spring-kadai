@@ -16,7 +16,7 @@ let myBoundSizeStr: NSString = "Bounds width: \(myBoundSize.width) height: \(myB
 
 let TileSize:CGFloat = myBoundSize.width * 0.1
 
-let BoardLayerPosition = CGPointMake(0.12*myBoundSize.width, -0.2*myBoundSize.width)
+let BoardLayerPosition = CGPointMake(0.11*myBoundSize.width, -0.22*myBoundSize.width)
 let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
