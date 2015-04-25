@@ -29,18 +29,22 @@ class TitleScene : BaseScene {
     }
     
     func initWebSocket() {
-        webSocket().bind("request_game_rejected", callback: { (data) -> Void in
+        func whenUnavailable(data: AnyObject!) {
             let startButton = self.childNodeWithName("startButton") as! SKLabelNode
             startButton.text = "WAITING..."
             startButton.fontColor = SKColor.grayColor()
-            self.isStartButtonEnabled = false
-        })
-        webSocket().bind("request_game_accepted", callback: { (data) -> Void in
+            self.isStartButtonEnabled = false        }
+    
+        func whenAvailable(data: AnyObject!) {
             let startButton = self.childNodeWithName("startButton") as! SKLabelNode
             startButton.text = "START"
             startButton.fontColor = SKColor.whiteColor()
             self.isStartButtonEnabled = true
-        })
+        }
+        
+        webSocket().bind("request_game_rejected", callback: whenUnavailable)
+        webSocket().bind("request_game_accepted", callback: whenAvailable)
+        webSocket().bind("close_game", callback: whenAvailable)
     }
     
     func initScene() {
