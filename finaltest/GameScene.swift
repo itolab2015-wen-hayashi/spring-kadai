@@ -29,7 +29,6 @@ class GameScene: BaseScene {
     let strLayer = SKNode()
     
     let scoreLabel = SKLabelNode()
-    let gameoverLabel = SKLabelNode()
     
     var tileArrayPos = Array(count: NumColumns, repeatedValue: Array(count: NumRows, repeatedValue: CGPoint()))
     var touchedNode = SKNode()
@@ -298,21 +297,19 @@ class GameScene: BaseScene {
     /* ゲームオーバー */
     func gameover(won: Bool) {
         // 画面に表示
-        gameoverLabel.text = won ? "You Win" : "You Lose"
+        let gameoverLabel = SKLabelNode()
+        gameoverLabel.text = won ? "You Win" : "Try again!"
         gameoverLabel.fontSize = myBoundSize.width*0.2
         gameoverLabel.fontColor = won ? SKColor(red: 0.7, green: 0, blue: 0, alpha: 1) : SKColor.blueColor()
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
         
-        
         // 一定時間後にゲームオーバー画面に遷移する
-        let size = self.size;
-        let gameViewController = self.gameViewController
         NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(0.5), repeats: false, handler: { (timer) -> Void in
-            let scene = GameoverScene(size: size, gameViewController: gameViewController)
+            let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
             
-            (gameViewController.view as! SKView).presentScene(scene, transition: transition)
+            (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
         })
     }
     
