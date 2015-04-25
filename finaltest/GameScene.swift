@@ -37,15 +37,10 @@ class GameScene: BaseScene {
     
     // 最後に追加したタイル
     var currentTile: SKSpriteNode!
-    var nextTile: SKSpriteNode!
     
     // タイルが表示された時刻
     var tileDisplayedTime:NSTimeInterval = NSTimeInterval(0)
     var elapsedTime:Double = -1.0
-    
-    // 次の triggerTime
-    var prevCurrentTime: CFTimeInterval = 0
-    var timeToWait: CFTimeInterval = -1
     
     
     override init(size: CGSize, gameViewController: GameViewController) {
@@ -66,11 +61,7 @@ class GameScene: BaseScene {
     }
     
     func initWebSocket() {
-        // TODO: WebSocket のイベントハンドラを登録する
-        
-        // ------------------
-        // テスト用サンプルコード
-        // ------------------
+        // WebSocket のイベントハンドラを登録する
         
         // --- ここからイベント登録 ---
         
@@ -80,7 +71,8 @@ class GameScene: BaseScene {
             
             // 受信データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
-            let triggerTime: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            let triggerTimeStr: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            let triggerTime = self.defaultDateFormatter().dateFromString(triggerTimeStr)!
             let nextX = _data!["x"] as! Int
             let nextY = _data!["y"] as! Int
             let nextColor = _data!["color"] as! Int
@@ -89,19 +81,14 @@ class GameScene: BaseScene {
             println("nextY =\(nextY)")
             
             // タイル生成
-            //if(self.scorePoint < 800){
-            self.nextTile = self.makeTile(nextX, y: nextY, z: nextColor)
-            //}
-            
-            let nextTriggerTime = self.defaultDateFormatter().dateFromString(triggerTime)!
+            let nextTile = self.makeTile(nextX, y: nextY, z: nextColor)
             
             println("triggerTime=\(triggerTime)")
-            println("nextTriggerTime=\(nextTriggerTime)")
             
-            // self.nextTriggerTime になったら (nextTriggerTime 以降に1回だけ) タイルを表示する
-            self.timeToWait = nextTriggerTime.timeIntervalSinceNow
-            println("timeToWait=\(self.timeToWait)")
-            
+            // 表示
+            NSTimer.scheduledTimerWithTimeInterval(triggerTime.timeIntervalSinceNow, repeats: false, handler: { (timer) -> Void in
+                self.showTile(nextTile)
+            })
         })
         
         // みんなから経過時間を集計するために呼ばれるイベントのイベントハンドラ
@@ -203,7 +190,7 @@ class GameScene: BaseScene {
     }
     
     override func didMoveToView(view: SKView) {
-        //initMakeTile()
+        
     }
     
     func randomColor(x: Int)->UIColor{
@@ -248,7 +235,6 @@ class GameScene: BaseScene {
         sprite.anchorPoint = CGPointMake(0, 1.0)
         sprite.alpha *= 1.0
         sprite.color = randomColor(x)
-        //sprite.color = UIColor.greenColor()
         sprite.size = CGSizeMake(TileSize-1, TileSize-1)
         
         return sprite
@@ -256,42 +242,37 @@ class GameScene: BaseScene {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* タッチされるとき */
-        //var deleteColumnsArray = Array(arrayLiteral:SKNode())
+        
+        for touch in touches {
+            let location = (touch as! UITouch).locationInNode(self)
+            //printf(location)
+            touchedNode = self.nodeAtPoint(location)
+            for node in self.board.children{
+                if(touchedNode == node as! NSObject && !moveActionFlag){
+                    let now = NSDate.timeIntervalSinceReferenceDate()
 
-            for touch in touches {
-                let location = (touch as! UITouch).locationInNode(self)
-                //printf(location)
-                touchedNode = self.nodeAtPoint(location)
-                for node in self.board.children{
-                    if(touchedNode == node as! NSObject && !moveActionFlag){
-                        let now = NSDate.timeIntervalSinceReferenceDate()
-                        //println("now=\(now)")
-                        elapsedTime = (now - self.tileDisplayedTime) * 1000
-                        println("elapsed_Time=\(elapsedTime)")
-                        
-                        var data: NSDictionary = self.wsData([
-                            "elapsed_time": elapsedTime
-                        ])
-                        
-                        // TODO webSocket.trigger でメッセージを送る
-                        webSocket().trigger("tile_pushed", data: data, success: { (data) -> Void in
+                    elapsedTime = (now - self.tileDisplayedTime) * 1000
+                    println("elapsed_Time=\(elapsedTime)")
+                    
+                    var data: NSDictionary = self.wsData([
+                        "elapsed_time": elapsedTime
+                    ])
+                    
+                    // メッセージを送る
+                    webSocket().trigger("tile_pushed", data: data,
+                        success: { (data) -> Void in
                             println("tile_pushed: success")
-                        }, failure: { (data) -> Void in
+                        },
+                        failure: { (data) -> Void in
                             println("tile_pushed: failure")
-                        })
-                        
-                        self.removeChildrenInArray([touchedNode])
-                        board.removeChildrenInArray([touchedNode])
-                        //scorePoint += 100
-                        //initMakeTile()
-                        
-                    }
+                        }
+                    )
+                    
+                    self.removeChildrenInArray([touchedNode])
+                    board.removeChildrenInArray([touchedNode])
                 }
             }
-
-        //if(gameoverFlag == true){
-        //    self.reset()
-        //}
+        }
     }
     
     /* ゲームオーバー */
@@ -315,17 +296,6 @@ class GameScene: BaseScene {
     
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {
-        // 前回の update() からの経過時間
-        let delta = currentTime - self.prevCurrentTime
-        
-        // タイルを表示する
-        if (0 <= self.timeToWait && (self.timeToWait - delta) <= 0) {
-            println("boom")
-            self.showTile(self.nextTile)
-            self.nextTile = nil
-        }
-        self.timeToWait -= delta
-        
-        self.prevCurrentTime = currentTime
+        // do something if necessary
     }
 }
