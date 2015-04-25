@@ -304,12 +304,15 @@ class GameScene: BaseScene {
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
         
+        
         // 一定時間後にゲームオーバー画面に遷移する
+        let size = self.size;
+        let gameViewController = self.gameViewController
         NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(0.5), repeats: false, handler: { (timer) -> Void in
-            let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
+            let scene = GameoverScene(size: size, gameViewController: gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
             
-            (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
+            (gameViewController.view as! SKView).presentScene(scene, transition: transition)
         })
     }
     
