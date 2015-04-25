@@ -14,14 +14,15 @@ class GameoverScene : BaseScene {
     override init(size: CGSize, gameViewController: GameViewController) {
         super.init(size: size, gameViewController: gameViewController)
         
-        overScene()
+        initScene()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func overScene() {
+    /* シーン初期化 */
+    func initScene() {
         // 背景の設定
         self.backgroundColor = UIColor.orangeColor()
         

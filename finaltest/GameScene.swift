@@ -28,14 +28,13 @@ class GameScene: BaseScene {
     let textLayer = SKNode()
     let strLayer = SKNode()
     
-    let score = SKLabelNode()
+    let scoreLabel = SKLabelNode()
     let gameoverLabel = SKLabelNode()
     
     var tileArrayPos = Array(count: NumColumns, repeatedValue: Array(count: NumRows, repeatedValue: CGPoint()))
     var touchedNode = SKNode()
     var moveActionFlag = false
-    var gameoverFlag = false
-    var scorePoint = 0
+    var score = 0
     
     // 最後に追加したタイル
     var currentTile: SKSpriteNode!
@@ -144,11 +143,13 @@ class GameScene: BaseScene {
             // データ取り出し
             let _data = data as? Dictionary<String, AnyObject>
             let winner: String = _data!["winner"] as! String // 勝者の id
+            let addScore: Int = _data!["add_score"] as! Int
             
             // TODO: 勝ったかどうか判断して表示する
             
             if (self.myId() == winner) {
-                self.scorePoint += 100
+                self.score += addScore
+                self.updateScore()
             }
         })
         
@@ -160,22 +161,7 @@ class GameScene: BaseScene {
             let _data = data as? Dictionary<String, AnyObject>
             let winner: String = _data!["winner"] as! String // 勝者の id
             
-            // TODO: 勝ったかどうか判断して表示する
-            if (self.myId() == winner) {
-                println("You win")
-                self.gameover()
-                self.reset()
-                //self.gameoverFlag = true
-            }
-            else{
-                self.gameoverFlag = true
-                self.reset()
-            }
-            //let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
-            //let transition = SKTransition.fadeWithDuration(0.5)
-                
-            //self.view!.presentScene(scene, transition: transition)
-            
+            self.gameover(self.myId() == winner)
         })
         
         // --- ここまでイベント登録 ---
@@ -199,9 +185,9 @@ class GameScene: BaseScene {
         textfield.position = TextFieldPosition
         //textfield.anchorPoint = CGPointMake(0, 1.0)
         
-        score.fontColor = UIColor.blackColor()
-        score.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)*0.3)
-        textfield.addChild(score)
+        scoreLabel.fontColor = UIColor.blackColor()
+        scoreLabel.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)*0.3)
+        textfield.addChild(scoreLabel)
         
         strLayer.position = TextFieldPosition
         strLayer.addChild(textfield)
@@ -213,6 +199,8 @@ class GameScene: BaseScene {
         
         addChild(boardLayer)
         addChild(textLayer)
+        
+        updateScore()
     }
     
     override func didMoveToView(view: SKView) {
@@ -236,6 +224,10 @@ class GameScene: BaseScene {
             break
         }
         return color
+    }
+    
+    func updateScore() {
+        scoreLabel.text = "Score: \(score)"
     }
     
     func showTile(tile: SKSpriteNode) {
@@ -266,7 +258,7 @@ class GameScene: BaseScene {
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* タッチされるとき */
         //var deleteColumnsArray = Array(arrayLiteral:SKNode())
-        if(gameoverFlag == false){
+
             for touch in touches {
                 let location = (touch as! UITouch).locationInNode(self)
                 //printf(location)
@@ -297,36 +289,31 @@ class GameScene: BaseScene {
                     }
                 }
             }
-        }
+
         //if(gameoverFlag == true){
         //    self.reset()
         //}
     }
     
-    /*ゲームが終わるとき */
-    func gameover(){
-        gameoverLabel.text = "You Win"
+    /* ゲームオーバー */
+    func gameover(won: Bool) {
+        // 画面に表示
+        gameoverLabel.text = won ? "You Win" : "You Lost"
         gameoverLabel.fontSize = myBoundSize.width*0.2
         gameoverLabel.fontColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: 1)
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
-        gameoverFlag = true
+        
+        // 一定時間後にゲームオーバー画面に遷移する
+        NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(0.5), repeats: false, handler: { (timer) -> Void in
+            let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
+            let transition = SKTransition.fadeWithDuration(0.5)
+            
+            (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
+        })
     }
     
-    /*ゲームリセット*/
-    func reset(){
-        gameoverFlag = false
-        
-        gameoverLabel.removeFromParent()
-        
-        scorePoint = 0
-        
-        let scene = GameoverScene(size: size, gameViewController: self.gameViewController)
-        let transition = SKTransition.fadeWithDuration(0.5)
-        
-        (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
-    }
-    
+    /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {
         // 前回の update() からの経過時間
         let delta = currentTime - self.prevCurrentTime
@@ -338,17 +325,6 @@ class GameScene: BaseScene {
             self.nextTile = nil
         }
         self.timeToWait -= delta
-        
-        /* Called before each frame is rendered */
-        score.text = "Score : \(scorePoint)"
-        
-        /*
-        if(gameoverFlag == false){
-            if(scorePoint >= 800){
-                self.gameover()
-            }
-        }
-        */
         
         self.prevCurrentTime = currentTime
     }
