@@ -10,9 +10,13 @@ import SpriteKit
 
 let NumColumns = 6
 let NumRows = 10
-let TileSize:CGFloat = 50
 
-let BoardLayerPosition = CGPointMake(20, -80)
+let myBoundSize: CGSize = UIScreen.mainScreen().bounds.size
+let myBoundSizeStr: NSString = "Bounds width: \(myBoundSize.width) height: \(myBoundSize.height)"
+
+let TileSize:CGFloat = myBoundSize.width * 0.09
+
+let BoardLayerPosition = CGPointMake(0.12*myBoundSize.width, -0.2*myBoundSize.width)
 let TextFieldPosition = CGPointMake(20, -20)
 let TextFieldPosition2 = CGPointMake(20, -60)
 
@@ -193,10 +197,10 @@ class GameScene: BaseScene {
         
         let textfield = SKSpriteNode(color:UIColor(red: 0, green: 0, blue: 0, alpha: 0),size:CGSizeMake(CGFloat(NumColumns)*TileSize, 80))
         textfield.position = TextFieldPosition
-        textfield.anchorPoint = CGPointMake(0, 1.0)
+        //textfield.anchorPoint = CGPointMake(0, 1.0)
         
         score.fontColor = UIColor.blackColor()
-        score.position = CGPointMake(textfield.position.x*7, textfield.position.y-30)
+        score.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame)*0.3)
         textfield.addChild(score)
         
         strLayer.position = TextFieldPosition
@@ -302,7 +306,7 @@ class GameScene: BaseScene {
     /*ゲームが終わるとき */
     func gameover(){
         gameoverLabel.text = "You Win"
-        gameoverLabel.fontSize = 100
+        gameoverLabel.fontSize = myBoundSize.width*0.2
         gameoverLabel.fontColor = UIColor(red: 0.7, green: 0, blue: 0, alpha: 1)
         gameoverLabel.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
         self.addChild(gameoverLabel)
