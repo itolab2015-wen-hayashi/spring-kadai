@@ -80,6 +80,8 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         var touchedNode = nodeAtPoint(point)
         
         if (touchedNode.name == "restartButton") {
+            removeSubViews()
+            
             // ゲーム開始
             let scene = TitleScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)

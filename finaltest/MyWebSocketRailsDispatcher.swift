@@ -26,8 +26,9 @@ class MyWebSocketRailsDispatcher: WebSocketRailsDispatcher {
                 }
             })
         }
-        // 最後に bind したのしか残さない... FIXME
-        (self.callbacks[eventName]!).insert(callback!, atIndex: 0)
+        // FIXME: 最後に bind したのしか残さない... 本当は unbind 実装して使いやすくしたいんだが...
+        (self.callbacks[eventName]!).removeAll(keepCapacity: true)
+        (self.callbacks[eventName]!).append(callback!)
     }
     
     // TODO: unbind 実装できてない, swift嫌い
