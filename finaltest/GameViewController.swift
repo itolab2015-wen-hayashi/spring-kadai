@@ -62,8 +62,8 @@ class GameViewController: UIViewController {
             println("connect_accepted")
             
             // 自分の id を記録
-            let _data = data as? Dictionary<String, AnyObject>
-            self.myId = (_data!["id"] as? String)! // 自分のid
+            let dict = (data as? NSMutableDictionary)!
+            self.myId = (dict["id"] as? String)! // 自分のid
             
             println("myId=\(self.myId)")
         })
@@ -73,8 +73,8 @@ class GameViewController: UIViewController {
             println("check_delay")
             
             // 受信データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let recv_time: String = _data!["sent_time"] as! String
+            let dict = (data as? NSMutableDictionary)!
+            let recv_time: String = dict["sent_time"] as! String
             
             // 現在時刻を送る
             self.webSocket.trigger("update_delay", data: [
@@ -91,9 +91,9 @@ class GameViewController: UIViewController {
             println("client_list")
             
             // クライアントリストを更新する
-            let _data = data as? Dictionary<String, AnyObject>
-            self.clients = (_data!["clients"] as? Array<String>)!
-            self.devices = (_data!["devices"] as? Dictionary<String, String>)!
+            let dict = (data as? NSMutableDictionary)!
+            self.clients = (dict["clients"] as? Array<String>)!
+            self.devices = (dict["devices"] as? Dictionary<String, String>)!
             println("clients = \(self.clients)")
             println("devices = \(self.devices)")
         })

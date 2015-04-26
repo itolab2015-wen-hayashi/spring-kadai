@@ -11,8 +11,11 @@ import SpriteKit
 
 class GameoverScene : BaseScene {
     
-    override init(size: CGSize, gameViewController: GameViewController) {
+    var scores: NSMutableDictionary = [:]
+    
+    init(size: CGSize, gameViewController: GameViewController, scores: NSMutableDictionary) {
         super.init(size: size, gameViewController: gameViewController)
+        self.scores = scores
         
         initScene()
     }

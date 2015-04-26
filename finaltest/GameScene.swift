@@ -70,12 +70,12 @@ class GameScene: BaseScene {
             println("new_round")
             
             // 受信データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let triggerTimeStr: String = _data!["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
+            let dict: NSMutableDictionary = (data as? NSMutableDictionary)!
+            let triggerTimeStr: String = dict["trigger_time"] as! String // msまで含めた次にタイルを表示してほしい時刻
             let triggerTime = self.defaultDateFormatter().dateFromString(triggerTimeStr)!
-            let nextX = _data!["x"] as! Int
-            let nextY = _data!["y"] as! Int
-            let nextColor = _data!["color"] as! Int
+            let nextX = dict["x"] as! Int
+            let nextY = dict["y"] as! Int
+            let nextColor = dict["color"] as! Int
             
             println("nextX =\(nextX)")
             println("nextY =\(nextY)")
@@ -100,8 +100,8 @@ class GameScene: BaseScene {
             println("winner_approval")
 
             // 受信データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let minElapsedTime: Double = _data!["elapsed_time"] as! Double
+            let dict: NSMutableDictionary = (data as? NSMutableDictionary)!
+            let minElapsedTime: Double = dict["elapsed_time"] as! Double
             
             // 送信データを生成
             var wsdata: NSMutableDictionary = [:]
@@ -127,9 +127,9 @@ class GameScene: BaseScene {
             println("close_round")
             
             // データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let winner: String = _data!["winner"] as! String // 勝者の id
-            let addScore: Int = _data!["add_score"] as! Int
+            let dict: NSMutableDictionary = (data as? NSMutableDictionary)!
+            let winner: String = dict["winner"] as! String // 勝者の id
+            let addScore: Int = dict["add_score"] as! Int
             
             // TODO: 勝ったかどうか判断して表示する
             
@@ -144,10 +144,11 @@ class GameScene: BaseScene {
             println ("close_game")
             
             // データ取り出し
-            let _data = data as? Dictionary<String, AnyObject>
-            let winner: String = _data!["winner"] as! String // 勝者の id
+            let dict: NSMutableDictionary = (data as? NSMutableDictionary)!
+            let winner: String = dict["winner"] as! String // 勝者の id
+            let scores: NSMutableDictionary = (dict["scores"] as? NSMutableDictionary)!
             
-            self.gameover(self.myId() == winner)
+            self.gameover(self.myId() == winner, scores: scores)
         })
         
         // --- ここまでイベント登録 ---
@@ -276,7 +277,7 @@ class GameScene: BaseScene {
     }
     
     /* ゲームオーバー */
-    func gameover(won: Bool) {
+    func gameover(won: Bool, scores: NSMutableDictionary) {
         // 画面に表示
         let gameoverLabel = SKLabelNode()
         gameoverLabel.text = won ? "You Win" : "Try again!"
@@ -287,7 +288,7 @@ class GameScene: BaseScene {
         
         // 一定時間後にゲームオーバー画面に遷移する
         NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(0.5), repeats: false, handler: { (timer) -> Void in
-            let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController)
+            let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController, scores: scores)
             let transition = SKTransition.fadeWithDuration(0.5)
             
             (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
