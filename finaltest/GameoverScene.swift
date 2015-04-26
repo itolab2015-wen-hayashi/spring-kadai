@@ -11,7 +11,6 @@ import SpriteKit
 
 class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
     
-    var devices: NSMutableDictionary = [:]
     var scores: NSMutableDictionary = [:]
     var titleLabel: SKLabelNode?
     var scoreTable: UITableView?
@@ -19,7 +18,6 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
     
     init(size: CGSize, gameViewController: GameViewController, scores: NSMutableDictionary) {
         super.init(size: size, gameViewController: gameViewController)
-        self.devices = gameViewController.devices
         self.scores = scores
         
         initScene()
@@ -107,7 +105,7 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         cell.backgroundColor = UIColor.clearColor()
         
         let client_id: String = (scores.allKeys[indexPath.row] as? String)!
-        let name: String = ((devices[client_id] as! NSMutableDictionary)["name"] as? String)!
+        let name: String = ((devices()[client_id] as! NSMutableDictionary)["name"] as? String)!
         let score: Int = (scores[client_id] as? Int)!
         cell.textLabel?.text = name
         cell.detailTextLabel?.text = String(score)

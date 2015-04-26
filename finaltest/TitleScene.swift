@@ -9,9 +9,12 @@
 import Foundation
 import SpriteKit
 
-class TitleScene : BaseScene {
+class TitleScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
     
     var isStartButtonEnabled: Bool = false
+    var titleLabel: SKLabelNode?
+    var clientTable: UITableView?
+    var startButton: SKLabelNode?
     
     override init(size: CGSize, gameViewController: GameViewController) {
         super.init(size: size, gameViewController: gameViewController)
@@ -52,19 +55,45 @@ class TitleScene : BaseScene {
         self.backgroundColor = UIColor.orangeColor()
         
         // タイトルを表示する
-        var titleLabel = SKLabelNode(text: "TôT")
+        let titleLabel = SKLabelNode(text: "TôT")
         titleLabel.fontSize = 50
         titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 200)
+        self.titleLabel = titleLabel
         
         // ボタンを表示する
-        var startButton = SKLabelNode(text: "CONNECTING")
+        let startButton = SKLabelNode(text: "CONNECTING")
         startButton.name = "startButton"
         startButton.fontSize = 30
         startButton.fontColor = SKColor.whiteColor()
         startButton.position = CGPointMake(CGRectGetMidX(self.frame), 200)
+        self.startButton = startButton
         
         self.addChild(titleLabel)
         self.addChild(startButton)
+    }
+    
+    override func didMoveToView(view: SKView) {
+        // UITableView
+        let clientTableHeight = (titleLabel!.frame.minY - startButton!.frame.maxY)*0.8
+        
+        let clientTable = UITableView()
+        clientTable.frame = CGRectMake(
+            self.frame.size.width*0.1,
+            self.frame.height - (titleLabel!.frame.minY - clientTableHeight/0.8*0.1),
+            self.frame.size.width*0.8,
+            clientTableHeight)
+        clientTable.backgroundColor = UIColor.clearColor()
+        clientTable.separatorStyle = UITableViewCellSeparatorStyle.None
+        clientTable.layer.masksToBounds = true
+        clientTable.delegate = self
+        clientTable.dataSource = self
+        self.clientTable = clientTable
+        
+        self.view?.addSubview(clientTable)
+    }
+    
+    override func willMoveFromView(view: SKView) {
+        removeSubViews()
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -72,6 +101,8 @@ class TitleScene : BaseScene {
         var touchedNode = nodeAtPoint(point)
         
         if (touchedNode.name == "startButton" && isStartButtonEnabled) {
+            removeSubViews()
+            
             // ゲーム開始
             let scene = GameScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
@@ -80,4 +111,30 @@ class TitleScene : BaseScene {
         }
     }
     
+    override func onClientListUpdated() {
+        self.clientTable?.reloadData()
+    }
+    
+    func removeSubViews() {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.clientTable?.removeFromSuperview()
+        })
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return clients().count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        cell.textLabel?.textColor = UIColor.whiteColor()
+        cell.backgroundColor = UIColor.clearColor()
+        
+        let client_id: String = clients()[indexPath.row]
+        let name: String = ((devices()[client_id] as! NSMutableDictionary)["name"] as? String)!
+        cell.textLabel?.text = name
+        println(" row=\(indexPath.row), name=\(name)")
+        
+        return cell
+    }
 }

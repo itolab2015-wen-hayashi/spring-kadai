@@ -96,6 +96,10 @@ class GameViewController: UIViewController {
             self.devices = (dict["devices"] as? NSMutableDictionary)!
             println("clients = \(self.clients)")
             println("devices = \(self.devices)")
+            
+            if (self.skView?.scene is BaseScene) {
+                (self.skView?.scene as! BaseScene).onClientListUpdated()
+            }
         })
     }
 

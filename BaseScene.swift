@@ -52,4 +52,25 @@ class BaseScene : SKScene {
             "data": data
         ]
     }
+    
+    //
+    // 接続クライアント一覧を返す
+    //
+    func clients() -> Array<String> {
+        return gameViewController.clients
+    }
+    
+    //
+    // 接続クライアントのデバイス情報を返す
+    //
+    func devices() -> NSMutableDictionary {
+        return gameViewController.devices
+    }
+    
+    //
+    // オーバーライドして使う
+    //
+    func onClientListUpdated() {
+        
+    }
 }
