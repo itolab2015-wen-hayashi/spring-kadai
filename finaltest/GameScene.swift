@@ -289,7 +289,7 @@ class GameScene: BaseScene {
         // 一定時間後にゲームオーバー画面に遷移する
         NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(0.5), repeats: false, handler: { (timer) -> Void in
             let scene = GameoverScene(size: self.size, gameViewController: self.gameViewController, scores: scores)
-            let transition = SKTransition.fadeWithDuration(0.5)
+            let transition = SKTransition.fadeWithDuration(0.2)
             
             (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
         })
