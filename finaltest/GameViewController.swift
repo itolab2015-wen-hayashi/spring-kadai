@@ -12,7 +12,7 @@ import SpriteKit
 class GameViewController: UIViewController {
     
     var skView : SKView?
-    var webSocket: WebSocketRailsDispatcher!
+    var webSocket: MyWebSocketRailsDispatcher!
     
     var myId: String = ""
     var clients: Array<String> = []

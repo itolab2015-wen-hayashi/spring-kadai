@@ -13,7 +13,9 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
     
     var devices: NSMutableDictionary = [:]
     var scores: NSMutableDictionary = [:]
+    var titleLabel: SKLabelNode?
     var scoreTable: UITableView?
+    var restartButton: SKLabelNode?
     
     init(size: CGSize, gameViewController: GameViewController, scores: NSMutableDictionary) {
         super.init(size: size, gameViewController: gameViewController)
@@ -36,20 +38,27 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         var titleLabel = SKLabelNode(text: "Score")
         titleLabel.fontSize = 50
         titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 150)
+        self.titleLabel = titleLabel
         
         // リスタートボタンを表示する
         let restartButton = SKLabelNode(text: "RESTART")
         restartButton.name = "restartButton"
         restartButton.fontSize = 30
         restartButton.position = CGPointMake(CGRectGetMidX(self.frame), 150)
+        self.restartButton = restartButton
         
+        self.addChild(titleLabel)
+        self.addChild(restartButton)
+    }
+    
+    override func didMoveToView(view: SKView) {
         // UITableView
-        let scoreTableHeight = (titleLabel.frame.minY - restartButton.frame.maxY)*0.8
-        println(scoreTableHeight)
+        let scoreTableHeight = (titleLabel!.frame.minY - restartButton!.frame.maxY)*0.8
+        
         let scoreTable = UITableView()
         scoreTable.frame = CGRectMake(
             self.frame.size.width*0.1,
-            self.frame.height - (titleLabel.frame.minY - scoreTableHeight/0.8*0.1),
+            self.frame.height - (titleLabel!.frame.minY - scoreTableHeight/0.8*0.1),
             self.frame.size.width*0.8,
             scoreTableHeight)
         scoreTable.backgroundColor = UIColor.clearColor()
@@ -59,16 +68,11 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         scoreTable.dataSource = self
         self.scoreTable = scoreTable
         
-        self.addChild(titleLabel)
-        self.addChild(restartButton)
-    }
-    
-    override func didMoveToView(view: SKView) {
-        self.view?.addSubview(scoreTable!)
+        self.view?.addSubview(scoreTable)
     }
     
     override func willMoveFromView(view: SKView) {
-        scoreTable?.removeFromSuperview()
+        removeSubViews()
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -76,14 +80,18 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         var touchedNode = nodeAtPoint(point)
         
         if (touchedNode.name == "restartButton") {
-            scoreTable?.removeFromSuperview()
-            
             // ゲーム開始
             let scene = TitleScene(size: size, gameViewController: self.gameViewController)
             let transition = SKTransition.fadeWithDuration(0.5)
             
             (self.gameViewController.view as! SKView).presentScene(scene, transition: transition)
         }
+    }
+    
+    func removeSubViews() {
+        dispatch_async(dispatch_get_main_queue(), {
+            self.scoreTable?.removeFromSuperview()
+        })
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,7 +109,7 @@ class GameoverScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         let score: Int = (scores[client_id] as? Int)!
         cell.textLabel?.text = name
         cell.detailTextLabel?.text = String(score)
-        println(" indexPath=\(indexPath), name=\(name), score=\(score)")
+        println(" row=\(indexPath.row), name=\(name), score=\(score)")
         
         return cell
     }

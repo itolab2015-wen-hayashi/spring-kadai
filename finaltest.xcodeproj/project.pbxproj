@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2611A17F1AE7692F000F2DD3 /* GameoverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2611A17E1AE7692E000F2DD3 /* GameoverScene.swift */; };
 		26375E971ACC305A00477B7C /* table.png in Resources */ = {isa = PBXBuildFile; fileRef = 26375E961ACC305A00477B7C /* table.png */; };
+		2F6B6BB51AEC910B00CA7348 /* MyWebSocketRailsDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F6B6BB41AEC910B00CA7348 /* MyWebSocketRailsDispatcher.swift */; };
 		2FAF86C31AEB57D6001F5D7F /* NSTimer+Closure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FAF86C21AEB57D6001F5D7F /* NSTimer+Closure.swift */; };
 		2FDCC4451ADF6970004B0A36 /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDCC4441ADF6970004B0A36 /* TitleScene.swift */; };
 		2FDCC4471ADFACDB004B0A36 /* BaseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FDCC4461ADFACDB004B0A36 /* BaseScene.swift */; };
@@ -37,6 +38,7 @@
 		2611A17E1AE7692E000F2DD3 /* GameoverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameoverScene.swift; sourceTree = "<group>"; };
 		26375E961ACC305A00477B7C /* table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table.png; sourceTree = SOURCE_ROOT; };
 		2F4F4E581AD7A1E000FA8C85 /* objc-headers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "objc-headers.h"; sourceTree = "<group>"; };
+		2F6B6BB41AEC910B00CA7348 /* MyWebSocketRailsDispatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyWebSocketRailsDispatcher.swift; sourceTree = "<group>"; };
 		2FAF86C21AEB57D6001F5D7F /* NSTimer+Closure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTimer+Closure.swift"; sourceTree = "<group>"; };
 		2FDCC4441ADF6970004B0A36 /* TitleScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		2FDCC4461ADFACDB004B0A36 /* BaseScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BaseScene.swift; path = ../BaseScene.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				D57964711AC06BEB00FD56E2 /* Supporting Files */,
 				2F4F4E581AD7A1E000FA8C85 /* objc-headers.h */,
 				2FAF86C21AEB57D6001F5D7F /* NSTimer+Closure.swift */,
+				2F6B6BB41AEC910B00CA7348 /* MyWebSocketRailsDispatcher.swift */,
 			);
 			path = finaltest;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				D579647A1AC06BEB00FD56E2 /* GameViewController.swift in Sources */,
 				2611A17F1AE7692F000F2DD3 /* GameoverScene.swift in Sources */,
 				D57964741AC06BEB00FD56E2 /* AppDelegate.swift in Sources */,
+				2F6B6BB51AEC910B00CA7348 /* MyWebSocketRailsDispatcher.swift in Sources */,
 				2FDCC4451ADF6970004B0A36 /* TitleScene.swift in Sources */,
 				2FAF86C31AEB57D6001F5D7F /* NSTimer+Closure.swift in Sources */,
 				2FDCC4471ADFACDB004B0A36 /* BaseScene.swift in Sources */,
