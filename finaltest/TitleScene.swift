@@ -57,7 +57,7 @@ class TitleScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         // タイトルを表示する
         let titleLabel = SKLabelNode(text: "TôT")
         titleLabel.fontSize = 50
-        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 200)
+        titleLabel.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.size.height - 150)
         self.titleLabel = titleLabel
         
         // ボタンを表示する
@@ -65,7 +65,7 @@ class TitleScene : BaseScene, UITableViewDataSource, UITableViewDelegate {
         startButton.name = "startButton"
         startButton.fontSize = 30
         startButton.fontColor = SKColor.whiteColor()
-        startButton.position = CGPointMake(CGRectGetMidX(self.frame), 200)
+        startButton.position = CGPointMake(CGRectGetMidX(self.frame), 150)
         self.startButton = startButton
         
         self.addChild(titleLabel)
