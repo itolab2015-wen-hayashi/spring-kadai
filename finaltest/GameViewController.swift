@@ -16,7 +16,7 @@ class GameViewController: UIViewController {
     
     var myId: String = ""
     var clients: Array<String> = []
-    var devices: Dictionary<String, String> = Dictionary<String, String>()
+    var devices: NSMutableDictionary = [:]
     let myDateFormatter: NSDateFormatter = NSDateFormatter()
     
     override func viewDidLoad() {
@@ -93,7 +93,7 @@ class GameViewController: UIViewController {
             // クライアントリストを更新する
             let dict = (data as? NSMutableDictionary)!
             self.clients = (dict["clients"] as? Array<String>)!
-            self.devices = (dict["devices"] as? Dictionary<String, String>)!
+            self.devices = (dict["devices"] as? NSMutableDictionary)!
             println("clients = \(self.clients)")
             println("devices = \(self.devices)")
         })
